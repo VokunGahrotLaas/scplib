@@ -1,0 +1,2 @@
+# scplib
+C multipurpose library
