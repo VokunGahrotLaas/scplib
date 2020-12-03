@@ -2,9 +2,13 @@
 #define SCP_UTILS_H
 
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 
-#define bool uint8_t
+
+
+#define byte uint8_t
+#define bool byte
 #define true 1
 #define false 0
 
