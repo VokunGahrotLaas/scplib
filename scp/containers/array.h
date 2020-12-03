@@ -42,7 +42,7 @@ void scpArray_resize(scpArray* array, size_t count) {
 
 void* scpArray_at(scpArray* array, size_t index) {
 	if (index >= array->count) {
-		fprintf_s(stderr, "scpArray_at: index can't be greater or equal to count (%i >= %i)", index, array->count);
+		fprintf(stderr, "scpArray_at: index can't be greater or equal to count (%i >= %i)", index, array->count);
 		exit(EXIT_FAILURE);
 	}
 	return array->data + index * array->size;
