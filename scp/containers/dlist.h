@@ -143,7 +143,7 @@ void scpDList_push_back(scpDList* list, void* data) {
 
 void* scpDList_pop_front(scpDList* list) {
 	if (list->first == NULL) {
-		fputs("scpDList_pop_front: list was empty\n", stderr);
+		fprintf_s("scpDList_pop_front: list was empty\n", stderr);
 		exit(EXIT_FAILURE);
 	}
 
@@ -170,7 +170,7 @@ void* scpDList_pop_front(scpDList* list) {
 
 void* scpDList_pop_back(scpDList* list) {
 	if (list->last == NULL) {
-		fputs("scpDList_pop_back: list was empty\n", stderr);
+		fprintf_s("scpDList_pop_back: list was empty\n", stderr);
 		exit(EXIT_FAILURE);
 	}
 
