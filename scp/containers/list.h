@@ -167,14 +167,12 @@ void scpList_map(scpList* list, void(*f)(void*)) {
 }
 
 void scpList_print(scpList* list, void(*print_element)(void*)) {
-	void print(void* data, size_t index, size_t size) {
-		print_element(data);
-		if (index != size - 1)
+	fputc('[' ,stdout);
+	for (scpListNode* node = list->first; node != NULL; node = node->next) {
+		print_element(node->data);
+		if (node->next != NULL)
 			fputs(", ", stdout);
 	}
-
-	fputc('[' ,stdout);
-	scpList_map_index(list, print);
 	fputc(']', stdout);
 }
 

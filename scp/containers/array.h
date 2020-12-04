@@ -59,14 +59,12 @@ void scpArray_map(scpArray* array, void(*f)(void*)) {
 }
 
 void scpArray_print(scpArray* array, void(*print_element)(void*)) {
-	void print(void* data, size_t index, size_t count) {
-		print_element(data);
-		if (index != count - 1)
+	fputc('[', stdout);
+	for (size_t i = 0; i < array->count; ++i) {
+		print_element(array->data + i * array->size);
+		if (i != array->count - 1)
 			fputs(", ", stdout);
 	}
-
-	fputc('[', stdout);
-	scpArray_map_index(array, print);
 	fputc(']', stdout);
 }
 

@@ -227,26 +227,22 @@ void scpDList_rmap(scpDList* list, void(*f)(void*)) {
 }
 
 void scpDList_print(scpDList* list, void(*print_element)(void*)) {
-	void print(void* data, size_t index, size_t size) {
-		print_element(data);
-		if (index != size - 1)
+	fputc('[' ,stdout);
+	for (scpDListNode* node = list->first; node != NULL; node = node->next) {
+		print_element(node->data);
+		if (node->next != NULL)
 			fputs(", ", stdout);
 	}
-
-	fputc('[' ,stdout);
-	scpDList_map_index(list, print);
 	fputc(']', stdout);
 }
 
 void scpDList_rprint(scpDList* list, void(*print_element)(void*)) {
-	void print(void* data, size_t index, size_t size) {
-		print_element(data);
-		if (index != 0)
+	fputc('[' ,stdout);
+	for (scpDListNode* node = list->last; node != NULL; node = node->prev) {
+		print_element(node->data);
+		if (node->prev != NULL)
 			fputs(", ", stdout);
 	}
-
-	fputc('[' ,stdout);
-	scpDList_rmap_index(list, print);
 	fputc(']', stdout);
 }
 
