@@ -24,12 +24,13 @@ scpDList* scpDList_create(void);
 scpDList* scpDList_copy(scpDList* other);
 scpDList* scpDList_fcopy(scpDList* other, void*(*copy_data)(void*));
 void scpDList_destroy(scpDList* list);
+size_t scpDList_size(scpDList* list);
 void scpDList_push_front(scpDList* list, void* data);
 void scpDList_push_back(scpDList* list, void* data);
 void* scpDList_pop_front(scpDList* list);
 void* scpDList_pop_back(scpDList* list);
-void scpDList_map_node(scpDList* list, void(*f)(scpDListNode*));
-void scpDList_rmap_node(scpDList* list, void(*f)(scpDListNode*));
+void scpDList_map_index(scpDList* list, void(*f)(void*, size_t, size_t));
+void scpDList_rmap_index(scpDList* list, void(*f)(void*, size_t, size_t));
 void scpDList_map(scpDList* list, void(*f)(void*));
 void scpDList_rmap(scpDList* list, void(*f)(void*));
 void scpDList_print(scpDList* list, void(*print_element)(void*));
@@ -93,6 +94,12 @@ void scpDList_destroy(scpDList* list) {
 		free(to_free);
 	}
 	free(list);
+}
+
+size_t scpDList_size(scpDList* list) {
+	size_t i = 0;
+	for (scpDListNode* node = list->first; node != NULL; node = node->next, ++i);
+	return i;
 }
 
 void scpDList_push_front(scpDList* list, void* data) {
@@ -195,14 +202,18 @@ void* scpDList_pop_back(scpDList* list) {
 	return data;
 }
 
-void scpDList_map_node(scpDList* list, void(*f)(scpDListNode*)) {
+void scpDList_map_index(scpDList* list, void(*f)(void*, size_t, size_t)) {
+	size_t size = scpDList_size(list);
+	size_t i = 0;
 	for (scpDListNode* node = list->first; node != NULL; node = node->next)
-		f(node);
+		f(node->data, i++, size);
 }
 
-void scpDList_rmap_node(scpDList* list, void(*f)(scpDListNode*)) {
+void scpDList_rmap_index(scpDList* list, void(*f)(void*, size_t, size_t)) {
+	size_t size = scpDList_size(list);
+	size_t i = 0;
 	for (scpDListNode* node = list->last; node != NULL; node = node->prev)
-		f(node);
+		f(node->data, size - i++ - 1, size);
 }
 
 void scpDList_map(scpDList* list, void(*f)(void*)) {
@@ -216,26 +227,26 @@ void scpDList_rmap(scpDList* list, void(*f)(void*)) {
 }
 
 void scpDList_print(scpDList* list, void(*print_element)(void*)) {
-	void print(scpDListNode* node) {
-		print_element(node->data);
-		if (node->next != NULL)
+	void print(void* data, size_t index, size_t size) {
+		print_element(data);
+		if (index != size - 1)
 			fputs(", ", stdout);
 	}
 
 	fputc('[' ,stdout);
-	scpDList_map_node(list, print);
+	scpDList_map_index(list, print);
 	fputc(']', stdout);
 }
 
 void scpDList_rprint(scpDList* list, void(*print_element)(void*)) {
-	void print(scpDListNode* node) {
-		print_element(node->data);
-		if (node->prev != NULL)
+	void print(void* data, size_t index, size_t size) {
+		print_element(data);
+		if (index != 0)
 			fputs(", ", stdout);
 	}
 
 	fputc('[' ,stdout);
-	scpDList_rmap_node(list, print);
+	scpDList_rmap_index(list, print);
 	fputc(']', stdout);
 }
 

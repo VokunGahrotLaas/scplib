@@ -22,11 +22,12 @@ scpList* scpList_create(void);
 scpList* scpList_copy(scpList* other);
 scpList* scpList_fcopy(scpList* other, void*(*copy_data)(void*));
 void scpList_destroy(scpList* list);
+size_t scpList_size(scpList* list);
 void scpList_push_front(scpList* list, void* data);
 void scpList_push_back(scpList* list, void* data);
 void* scpList_pop_front(scpList* list);
 void* scpList_pop_back(scpList* list);
-void scpList_map_node(scpList* list, void(*f)(scpListNode*));
+void scpList_map_index(scpList* list, void(*f)(void*, size_t, size_t));
 void scpList_map(scpList* list, void(*f)(void*));
 void scpList_print(scpList* list, void(*print_element)(void*));
 
@@ -79,6 +80,12 @@ void scpList_destroy(scpList* list) {
 		free(to_free);
 	}
 	free(list);
+}
+
+size_t scpList_size(scpList* list) {
+	size_t i = 0;
+	for (scpListNode* node = list->first; node != NULL; node = node->next, ++i);
+	return i;
 }
 
 void scpList_push_front(scpList* list, void* data) {
@@ -147,9 +154,11 @@ void* scpList_pop_back(scpList* list) {
 	return data;
 }
 
-void scpList_map_node(scpList* list, void(*f)(scpListNode*)) {
+void scpList_map_index(scpList* list, void(*f)(void*, size_t, size_t)) {
+	size_t size = scpList_size(list);
+	size_t i = 0;
 	for (scpListNode* node = list->first; node != NULL; node = node->next)
-		f(node);
+		f(node->data, i++, size);
 }
 
 void scpList_map(scpList* list, void(*f)(void*)) {
@@ -158,14 +167,14 @@ void scpList_map(scpList* list, void(*f)(void*)) {
 }
 
 void scpList_print(scpList* list, void(*print_element)(void*)) {
-	void print(scpListNode* node) {
-		print_element(node->data);
-		if (node->next != NULL)
+	void print(void* data, size_t index, size_t size) {
+		print_element(data);
+		if (index != size - 1)
 			fputs(", ", stdout);
 	}
 
 	fputc('[' ,stdout);
-	scpList_map_node(list, print);
+	scpList_map_index(list, print);
 	fputc(']', stdout);
 }
 
