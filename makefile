@@ -1,4 +1,4 @@
-DEBUG = yes
+DEBUG = no
 
 ifeq ($(DEBUG),yes)
 	DEBUGFLAGS = -O0
@@ -7,34 +7,38 @@ else
 endif
 
 CC = gcc
-CCFLAGS = $(DEBUGFLAGS) -Wall
+CCFLAGS = $(DEBUGFLAGS) -std=gnu17 -Wall -Wextra -Wpedantic -Wconversion -Werror
 LDFLAGS = 
 INCLUDES = -I. -I/usr/include
 LIBS = -L/usr/lib
-TESTS = $(wildcard scp/tests/*.c)
-TESTS_EXEC = $(filter $(wildcard *),$(subst .c,,$(subst scp/tests/,,$(TESTS))))
-TESTS_EXEC := $(wildcard *.exe)
+TESTS = $(wildcard tests/*.c)
+TESTS_EXEC = $(subst .c,,$(TESTS))
 
 empty = 
 space = $(empty) $(empty)
+tab = $(empty)	$(empty)
 comma = ,
+define newline
 
-all: $(subst test_,run_test_,$(subst .c,,$(subst scp/tests/,,$(TESTS))))
+$(empty)
+endef
+
+all: $(subst test_,run_test_,$(subst .c,,$(subst tests/,,$(TESTS))))
 
 run_%: %
-	@./$(subst run_,,$@)
+	@echo "Running "$<"..."
+	@echo "================================"
+	@./tests/$<
+	@echo "================================"
+	@echo "Finished "$<
+	@echo ""
 
-test_%: scp/tests/test_%.o
-	@$(CC) -o $@ $< $(LDFLAGS) $(LIBS)
-
-%.o: %.c
-	@$(CC) -o $@ -c $< $(CCFLAGS) $(INCLUDES)
-
-.PHONY: all clear mrproper run_%
+test_%: tests/test_%.c
+	@$(CC) -o tests/$@ $< $(LDFLAGS) $(LIBS) $(CCFLAGS) $(INCLUDES)
 
 clean:
-	@rm -rf $(wildcard scp/tests/*.o)
 
 mrproper: clean
 	@rm -rf $(TESTS_EXEC)
-	@rm -rf $(wildcard *.exe)
+
+.PHONY: all clear mrproper run_% test_%

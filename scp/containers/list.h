@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 typedef struct scpListNode {
 	void* data;
 	struct scpListNode* next;
@@ -13,8 +12,6 @@ typedef struct scpListNode {
 typedef struct {
 	scpListNode* first;
 } scpList;
-
-
 
 scpListNode* scpListNode_create(void* data);
 
@@ -31,16 +28,12 @@ void scpList_map_index(scpList* list, void(*f)(void*, size_t, size_t));
 void scpList_map(scpList* list, void(*f)(void*));
 void scpList_print(scpList* list, void(*print_element)(void*));
 
-
-
 scpListNode* scpListNode_create(void* data) {
 	scpListNode* node = malloc(sizeof(scpListNode));
 	node->next = NULL;
 	node->data = data;
 	return node;
 }
-
-
 
 scpList* scpList_create(void) {
 	scpList* list = malloc(sizeof(scpList));

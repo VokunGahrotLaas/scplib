@@ -3,20 +3,15 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
-
 typedef struct scpDListNode {
 	void* data;
 	struct scpDListNode* prev;
 	struct scpDListNode* next;
 } scpDListNode;
-
 typedef struct {
 	scpDListNode* first;
 	scpDListNode* last;
 } scpDList;
-
-
 
 scpDListNode* scpDListNode_create(void* data);
 
@@ -36,8 +31,6 @@ void scpDList_rmap(scpDList* list, void(*f)(void*));
 void scpDList_print(scpDList* list, void(*print_element)(void*));
 void scpDList_rprint(scpDList* list, void(*print_element)(void*));
 
-
-
 scpDListNode* scpDListNode_create(void* data) {
 	scpDListNode* node = malloc(sizeof(scpDListNode));
 	node->prev = NULL;
@@ -45,8 +38,6 @@ scpDListNode* scpDListNode_create(void* data) {
 	node->data = data;
 	return node;
 }
-
-
 
 scpDList* scpDList_create(void) {
 	scpDList* list = malloc(sizeof(scpDList));
