@@ -32,7 +32,7 @@ void scpDList_print(scpDList* list, void(*print_element)(void*));
 void scpDList_rprint(scpDList* list, void(*print_element)(void*));
 
 scpDListNode* scpDListNode_create(void* data) {
-	scpDListNode* node = malloc(sizeof(scpDListNode));
+	scpDListNode* node = (scpDListNode*)malloc(sizeof(scpDListNode));
 	node->prev = NULL;
 	node->next = NULL;
 	node->data = data;
@@ -40,7 +40,7 @@ scpDListNode* scpDListNode_create(void* data) {
 }
 
 scpDList* scpDList_create(void) {
-	scpDList* list = malloc(sizeof(scpDList));
+	scpDList* list = (scpDList*)malloc(sizeof(scpDList));
 	list->first = NULL;
 	return list;
 }

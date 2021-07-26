@@ -18,7 +18,7 @@ void scpArray_map(scpArray* array, void(*f)(void*));
 void scpArray_print(scpArray* array, void(*print_element)(void*));
 
 scpArray* scpArray_create(size_t count, size_t size) {
-	scpArray* array = malloc(sizeof(scpArray));
+	scpArray* array = (scpArray*)malloc(sizeof(scpArray));
 	array->data = calloc(count, size);
 	array->count = count;
 	array->size = size;
@@ -61,4 +61,4 @@ void scpArray_print(scpArray* array, void(*print_element)(void*)) {
 	fputc(']', stdout);
 }
 
-#endif //SCP_ARRAY_H
+#endif // SCP_ARRAY_H

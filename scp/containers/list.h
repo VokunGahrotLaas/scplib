@@ -29,14 +29,14 @@ void scpList_map(scpList* list, void(*f)(void*));
 void scpList_print(scpList* list, void(*print_element)(void*));
 
 scpListNode* scpListNode_create(void* data) {
-	scpListNode* node = malloc(sizeof(scpListNode));
+	scpListNode* node = (scpListNode*)malloc(sizeof(scpListNode));
 	node->next = NULL;
 	node->data = data;
 	return node;
 }
 
 scpList* scpList_create(void) {
-	scpList* list = malloc(sizeof(scpList));
+	scpList* list = (scpList*)malloc(sizeof(scpList));
 	list->first = NULL;
 	return list;
 }

@@ -10,7 +10,8 @@ typedef enum scpEsceptionCode {
 	scpExceptionCode_Success = EXIT_SUCCESS,
 	scpExceptionCode_Failure = EXIT_FAILURE,
 	scpExceptionCode_OutOfBound,
-	scpExceptionCode_NullPointer
+	scpExceptionCode_NullPointer,
+	scpExceptionCode_NotImplemented
 } scpExitCode;
 
 noreturn void scpException_Exception(int status, const char* message);
@@ -19,6 +20,8 @@ noreturn void scpException_OutOfBound(const char* message);
 noreturn void scpException_OutOfBoundf(const char* format, ...);
 noreturn void scpException_NullPointer(const char* message);
 noreturn void scpException_NullPointerf(const char* format, ...);
+noreturn void scpException_NotImplemented(const char* message);
+noreturn void scpException_NotImplementedf(const char* format, ...);
 
 noreturn void scpException_Exception(int status, const char* message) {
 	fprintf(stderr, "scpException (%i): '%s'\n", status, message);
@@ -63,6 +66,21 @@ noreturn void scpException_NullPointerf(const char* format, ...) {
 	va_end(args);
 	fputs("'\n", stderr);
 	exit(scpExceptionCode_NullPointer);
+}
+
+noreturn void scpException_NotImplemented(const char* message) {
+	fprintf(stderr, "scpException NotImplemented: '%s'\n", message);
+	exit(scpExceptionCode_NotImplemented);
+}
+
+noreturn void scpException_NotImplementedf(const char* format, ...) {
+	fputs("scpException NotImplemented: '", stderr);
+	va_list args;
+	va_start(args, format);
+	vfprintf(stderr, format, args);
+	va_end(args);
+	fputs("'\n", stderr);
+	exit(scpExceptionCode_NotImplemented);
 }
 
 #endif // SCP_EXCEPTIONS_H
