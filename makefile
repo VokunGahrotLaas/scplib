@@ -23,7 +23,9 @@ define newline
 $(empty)
 endef
 
-all: $(subst test_,run_test_,$(subst .c,,$(subst tests/,,$(TESTS))))
+all: tests
+
+tests: $(subst test_,run_test_,$(subst .c,,$(subst tests/,,$(TESTS))))
 
 run_%: %
 	@echo "Running "$<"..."
@@ -41,4 +43,7 @@ clean:
 mrproper: clean
 	@rm -rf $(TESTS_EXEC)
 
-.PHONY: all clear mrproper run_% test_%
+install:
+	@cp -r ./scp /usr/include/
+
+.PHONY: all clear mrproper run_% test_% tests install

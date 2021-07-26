@@ -24,8 +24,6 @@ int main(void) {
 	scpArray_print(array, print_size_t);
 	printf("\n");
 
-	scpArray_at(array, (size_t)-1);
-
 	scpArray_destroy(array);
 	return EXIT_SUCCESS;
 }
