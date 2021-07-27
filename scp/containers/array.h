@@ -3,55 +3,77 @@
 
 #include <scp/exceptions.h>
 
-typedef struct scpArray {
+struct scpArrayType;
+
+struct scpArray {
+	struct scpArrayType* type;
 	void* data;
 	size_t count;
 	size_t size;
-} scpArray;
+};
 
-scpArray* scpArray_create(size_t count, size_t size);
-void scpArray_destroy(scpArray* array);
-void scpArray_resize(scpArray* array, size_t count);
-void* scpArray_at(scpArray* array, size_t index);
-void scpArray_map_index(scpArray* array, void(*f)(void*, size_t, size_t));
-void scpArray_map(scpArray* array, void(*f)(void*));
-void scpArray_print(scpArray* array, void(*print_element)(void*));
+struct scpArray* scpArray_new(size_t count, size_t size);
+void scpArray_delete(struct scpArray* array);
+void scpArray_resize(struct scpArray* array, size_t count);
+void* scpArray_at(struct scpArray* array, size_t index);
+void scpArray_map_index(struct scpArray* array, void(*f)(void*, size_t, size_t));
+void scpArray_map(struct scpArray* array, void(*f)(void*));
+void scpArray_print(struct scpArray* array, void(*print_element)(void*));
 
-scpArray* scpArray_create(size_t count, size_t size) {
-	scpArray* array = (scpArray*)malloc(sizeof(scpArray));
+struct scpArrayType {
+	struct scpArray* (*new)(size_t count, size_t size);
+	void (*delete)(struct scpArray* array);
+	void (*resize)(struct scpArray* array, size_t count);
+	void* (*at)(struct scpArray* array, size_t index);
+	void (*map_index)(struct scpArray* array, void(*f)(void*, size_t, size_t));
+	void (*map)(struct scpArray* array, void(*f)(void*));
+	void (*print)(struct scpArray* array, void(*print_element)(void*));
+} scpArray = {
+	.new = scpArray_new,
+	.delete = scpArray_delete,
+	.resize = scpArray_resize,
+	.at = scpArray_at,
+	.map_index = scpArray_map_index,
+	.map = scpArray_map,
+	.print = scpArray_print,
+};
+
+struct scpArray* scpArray_new(size_t count, size_t size) {
+	struct scpArray* array = (struct scpArray*)malloc(sizeof(scpArray));
+	array->type = &scpArray;
 	array->data = calloc(count, size);
 	array->count = count;
 	array->size = size;
 	return array;
 }
 
-void scpArray_destroy(scpArray* array) {
+void scpArray_delete(struct scpArray* array) {
 	free(array->data);
 	free(array);
 }
 
-void scpArray_resize(scpArray* array, size_t count) {
+void scpArray_resize(struct scpArray* array, size_t count) {
 	array->count = count;
 	array->data = realloc(array->data, array->size * array->count);
 }
 
-void* scpArray_at(scpArray* array, size_t index) {
+void* scpArray_at(struct scpArray* array, size_t index) {
 	if (index >= array->count)
 		scpException_OutOfBoundf("scpArray_at: index can't be greater or equal to count (%lu >= %lu)", index, array->count);
 	return (void*)((char*)array->data + index * array->size);
 }
 
-void scpArray_map_index(scpArray* array, void(*f)(void*, size_t, size_t)) {
+void scpArray_map_index(struct scpArray* array, void(*f)(void*, size_t, size_t)) {
 	for (size_t i = 0; i < array->count; ++i)
 		f((void*)((char*)array->data + i * array->size), i, array->count);
 }
 
-void scpArray_map(scpArray* array, void(*f)(void*)) {
+void scpArray_map(struct scpArray* array, void(*f)(void*)) {
 	for (size_t i = 0; i < array->count; ++i)
 		f((void*)((char*)array->data + i * array->size));
 }
 
-void scpArray_print(scpArray* array, void(*print_element)(void*)) {
+void scpArray_print(struct scpArray* array, void(*print_element)(void*)) {
 	fputc('[', stdout);
 	for (size_t i = 0; i < array->count; ++i) {
 		print_element((void*)((char*)array->data + i * array->size));
