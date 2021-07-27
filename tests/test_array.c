@@ -7,7 +7,7 @@
 int main(void) {
 	struct scpArray* array = scpArray.new(10, sizeof(size_t));
 	for (size_t i = 0; i < array->count; ++i)
-		*(size_t*)scpArray.at(array, i) = i;
+		((size_t*)array->data)[i] = i;
 	scpArray.print(array, print_size_t);
 	putc('\n', stdout);
 
