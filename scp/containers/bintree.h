@@ -1,8 +1,6 @@
 #ifndef SCP_BINTREE_H
 #define SCP_BINTREE_H
 
-#include <scp/exceptions.h>
-
 typedef struct scpBinTree {
 	void* data;
 	struct scpBinTree* left;

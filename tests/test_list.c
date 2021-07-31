@@ -27,12 +27,12 @@ int main(void) {
 	print_size_tList("f", fcopy);
 	printf("\n");
 
-	printf("popped: %lu %lu\n", *(size_t*)scpList_pop_front(list), *(size_t*)scpList_pop_back(list));
+	printf("popped: %zu %zu\n", *(size_t*)scpList_pop_front(list), *(size_t*)scpList_pop_back(list));
 
 	size_t* data2 = malloc(sizeof(size_t));
 	*data2 = data[0];
 	scpList_push_back(list, data2);
-	printf("pushed %lu back\n", *data2);
+	printf("pushed %zu back\n", *data2);
 
 	scpList_map(list, square);
 	printf("squared the list\n");
@@ -60,7 +60,7 @@ int main(void) {
 }
 
 static inline void print_size_t(void* data) {
-	printf("%lu", *(size_t*)data);
+	printf("%zu", *(size_t*)data);
 }
 
 static inline void print_size_tList(const char* name, scpList* list) {

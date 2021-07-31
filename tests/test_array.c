@@ -2,37 +2,27 @@
 #include <stdio.h>
 
 #include "scp/containers/array.h"
-
-static inline void print_size_t(void* data);
-static inline void square(void* data);
+#include "utils.h"
 
 int main(void) {
-	scpArray* array = scpArray_create(10, sizeof(size_t));
+	struct scpArray* array = scpArray.new(10, sizeof(size_t));
 	for (size_t i = 0; i < array->count; ++i)
 		((size_t*)array->data)[i] = i;
-	scpArray_print(array, print_size_t);
-	printf("\n");
+	scpArray.print(array, print_size_t);
+	putc('\n', stdout);
 
-	scpArray_map(array, square);
-	scpArray_print(array, print_size_t);
-	printf("\n");
+	scpArray.map(array, square);
+	scpArray.print(array, print_size_t);
+	putc('\n', stdout);
 
-	scpArray_resize(array, 16);
-	scpArray_print(array, print_size_t);
-	printf("\n");
+	scpArray.resize(array, 16);
+	scpArray.print(array, print_size_t);
+	putc('\n', stdout);
 
-	scpArray_resize(array, 4);
-	scpArray_print(array, print_size_t);
-	printf("\n");
+	scpArray.resize(array, 4);
+	scpArray.print(array, print_size_t);
+	putc('\n', stdout);
 
-	scpArray_destroy(array);
+	scpArray.delete(array);
 	return EXIT_SUCCESS;
-}
-
-static inline void print_size_t(void* data) {
-	printf("%lu", *(size_t*)data);
-}
-
-static inline void square(void* data) {
-	*(size_t*)data *= *(size_t*)data;
 }
