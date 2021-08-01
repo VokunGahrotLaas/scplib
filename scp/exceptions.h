@@ -8,7 +8,7 @@
 
 #include "scp/macros.h"
 
-#define SCP_MAKE_NEW_EXCEPTION(name)																			\
+#define _SCP_MAKE_NEW_EXCEPTION(name)																			\
 noreturn void scpException_ ## name(const char* file, int line, const char* func, const char* format, ...) {	\
 	fprintf(stderr, "scpException "SCP_TO_STRING(name)" - \"%s\" line %i in %s: \"", file, line, func);			\
 	va_list args;																								\
@@ -19,11 +19,11 @@ noreturn void scpException_ ## name(const char* file, int line, const char* func
 	abort();																									\
 }
 
-SCP_MAKE_NEW_EXCEPTION(Exception)
-SCP_MAKE_NEW_EXCEPTION(OutOfBound)
-SCP_MAKE_NEW_EXCEPTION(NullPointer)
-SCP_MAKE_NEW_EXCEPTION(NotImplemented)
-SCP_MAKE_NEW_EXCEPTION(InvalidArgument)
+_SCP_MAKE_NEW_EXCEPTION(Exception)
+_SCP_MAKE_NEW_EXCEPTION(OutOfBound)
+_SCP_MAKE_NEW_EXCEPTION(NullPointer)
+_SCP_MAKE_NEW_EXCEPTION(NotImplemented)
+_SCP_MAKE_NEW_EXCEPTION(InvalidArgument)
 
 #define SCP_EXCEPTION(name, ...) name(__FILE__, __LINE__, __func__, __VA_ARGS__)
 
