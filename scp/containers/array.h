@@ -17,11 +17,11 @@ struct scpArray {
 };
 
 struct scpArray* scpArray_new(size_t count, size_t size);
+void scpArray_delete(struct scpArray* array);
 struct scpArray* scpArray_clone(struct scpArray* array);
 struct scpArray* scpArray_fclone(struct scpArray* array, void(*copy_data)(void* data, void* new_data));
 void scpArray_copy(struct scpArray* array, struct scpArray* new_array);
 void scpArray_fcopy(struct scpArray* array, struct scpArray* new_array, void(*copy_data)(void* data, void* new_data));
-void scpArray_delete(struct scpArray* array);
 void scpArray_resize(struct scpArray* array, size_t count);
 void* scpArray_at(struct scpArray* array, size_t index);
 void scpArray_map_index(struct scpArray* array, void(*f)(void* data, size_t i, size_t count));
@@ -55,7 +55,7 @@ struct scpArrayType {
 };
 
 struct scpArray* scpArray_new(size_t count, size_t size) {
-	struct scpArray* array = (struct scpArray*)malloc(sizeof(scpArray));
+	struct scpArray* array = (struct scpArray*)malloc(sizeof(struct scpArray));
 	array->type = &scpArray;
 	array->data = calloc(count, size);
 	array->count = count;
@@ -69,7 +69,7 @@ void scpArray_delete(struct scpArray* array) {
 }
 
 struct scpArray* scpArray_clone(struct scpArray* array) {
-	struct scpArray* new_array = (struct scpArray*)malloc(sizeof(scpArray));
+	struct scpArray* new_array = (struct scpArray*)malloc(sizeof(struct scpArray));
 	new_array->type = &scpArray;
 	new_array->data = malloc(array->count * array->size);
 	memcpy(new_array->data, array->data, array->count * array->size);
@@ -79,7 +79,7 @@ struct scpArray* scpArray_clone(struct scpArray* array) {
 }
 
 struct scpArray* scpArray_fclone(struct scpArray* array, void(*copy_data)(void* data, void* new_data)) {
-	struct scpArray* new_array = (struct scpArray*)malloc(sizeof(scpArray));
+	struct scpArray* new_array = (struct scpArray*)malloc(sizeof(struct scpArray));
 	new_array->type = &scpArray;
 	new_array->data = malloc(array->count * array->size);
 	for (size_t i = 0; i < array->count * array->size; i += array->size)
