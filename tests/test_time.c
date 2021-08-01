@@ -18,9 +18,9 @@ int main(void) {
 void func_to_time(void) {
 	struct scpArray* array = scpArray.new(100000000, sizeof(size_t));
 	scpArray.map_index(array, assign_index);
-	scpArray.map(array, square);
+	scpArray.map(array, square_size_t);
 }
 
-void assign_index(void* data, size_t index, [[maybe_unused]] size_t count) {
+void assign_index(void* data, size_t index, scpMacro_unused size_t count) {
 	*(size_t*)data = (size_t)index;
 }

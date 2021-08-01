@@ -4,11 +4,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
-#include <stdnoreturn.h>
 
 #include "scp/macros.h"
 
 #define _SCP_MAKE_NEW_EXCEPTION(name)																			\
+scpMacro_format_printf(4, 5)																					\
 noreturn void scpException_ ## name(const char* file, int line, const char* func, const char* format, ...) {	\
 	fprintf(stderr, "scpException "SCP_TO_STRING(name)" - \"%s\" line %i in %s: \"", file, line, func);			\
 	va_list args;																								\
