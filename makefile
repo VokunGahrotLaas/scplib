@@ -11,9 +11,10 @@ CCFLAGS = $(DEBUGFLAGS) -std=gnu2x -Wall -Wextra -Wconversion -Werror
 LDFLAGS = 
 INCLUDES = -I. -I/usr/include
 LIBS = -L/usr/lib
-TESTS = $(wildcard tests/*.c)
+TESTS_DIR = tests
+TESTS = $(wildcard $(TESTS_DIR)/*.c)
 TESTS_EXEC = $(subst .c,,$(TESTS))
-STRICT_TESTS_EXEC = $(addprefix tests/strict_,$(subst tests/,,$(TESTS_EXEC)))
+STRICT_TESTS_EXEC = $(addprefix $(TESTS_DIR)/strict_,$(notdir $(TESTS_EXEC)))
 
 empty = 
 space = $(empty) $(empty)
@@ -26,7 +27,9 @@ endef
 
 all: tests
 
-tests: $(subst test_,run_test_,$(subst .c,,$(subst tests/,,$(TESTS))))
+tests: $(subst test_,run_test_,$(subst .c,,$(subst $(TESTS_DIR)/,,$(TESTS))))
+
+strict_tests: $(subst test_,run_strict_test_,$(subst .c,,$(subst $(TESTS_DIR)/,,$(TESTS))))
 
 run_%: %
 	@echo "Running "$<"..."
@@ -36,11 +39,11 @@ run_%: %
 	@echo "Finished "$<
 	@echo ""
 
-test_%: tests/test_%.c
+test_%: $(TESTS_DIR)/test_%.c
 	@$(CC) -o tests/$@ $< $(LDFLAGS) $(LIBS) $(CCFLAGS) $(INCLUDES)
 
-strict_test_%: tests/test_%.c
-	@$(CC) -o tests/$@ $< $(LDFLAGS) $(LIBS) $(CCFLAGS) -Wpedantic $(INCLUDES)
+strict_test_%: $(TESTS_DIR)/test_%.c
+	@$(CC) -o tests/$@ $< $(LDFLAGS) $(LIBS) $(CCFLAGS) $(INCLUDES) -Wpedantic -DSCP_PEDANTIC
 
 clean:
 
