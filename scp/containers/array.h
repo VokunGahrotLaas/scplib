@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "scp/macros.h"
 #include "scp/exceptions.h"
 
 struct scpArrayType;
@@ -19,27 +20,27 @@ struct scpArray {
 struct scpArray* scpArray_new(size_t count, size_t size);
 void scpArray_delete(struct scpArray* array);
 struct scpArray* scpArray_clone(struct scpArray* array);
-struct scpArray* scpArray_fclone(struct scpArray* array, void(*copy_data)(void* data, void* new_data));
+struct scpArray* scpArray_fclone(struct scpArray* array, scpFunc_copy copy_data);
 void scpArray_copy(struct scpArray* array, struct scpArray* new_array);
-void scpArray_fcopy(struct scpArray* array, struct scpArray* new_array, void(*copy_data)(void* data, void* new_data));
+void scpArray_fcopy(struct scpArray* array, struct scpArray* new_array, scpFunc_copy copy_data);
 void scpArray_resize(struct scpArray* array, size_t count);
 void* scpArray_at(struct scpArray* array, size_t index);
-void scpArray_map_index(struct scpArray* array, void(*f)(void* data, size_t i, size_t count));
-void scpArray_map(struct scpArray* array, void(*f)(void* data));
-void scpArray_print(struct scpArray* array, void(*print_element)(void* data));
+void scpArray_map_index(struct scpArray* array, scpFunc_map_index f);
+void scpArray_map(struct scpArray* array, scpFunc_map f);
+void scpArray_print(struct scpArray* array, scpFunc_print print_element);
 
 struct scpArrayType {
 	struct scpArray* (*new)(size_t count, size_t size);
 	void (*delete)(struct scpArray* array);
 	struct scpArray* (*clone)(struct scpArray* array);
-	struct scpArray* (*fclone)(struct scpArray* array, void(*copy_data)(void* data, void* new_data));
+	struct scpArray* (*fclone)(struct scpArray* array, scpFunc_copy copy_data);
 	void (*copy)(struct scpArray* array, struct scpArray* new_array);
-	void (*fcopy)(struct scpArray* array, struct scpArray* new_array, void(*copy_data)(void* data, void* new_data));
+	void (*fcopy)(struct scpArray* array, struct scpArray* new_array, scpFunc_copy copy_data);
 	void (*resize)(struct scpArray* array, size_t count);
 	void* (*at)(struct scpArray* array, size_t index);
-	void (*map_index)(struct scpArray* array, void(*f)(void* data, size_t index, size_t count));
-	void (*map)(struct scpArray* array, void(*f)(void* data));
-	void (*print)(struct scpArray* array, void(*print_element)(void* data));
+	void (*map_index)(struct scpArray* array, scpFunc_map_index f);
+	void (*map)(struct scpArray* array, scpFunc_map f);
+	void (*print)(struct scpArray* array, scpFunc_print print_element);
 } scpArray = {
 	.new = scpArray_new,
 	.delete = scpArray_delete,
@@ -78,7 +79,7 @@ struct scpArray* scpArray_clone(struct scpArray* array) {
 	return new_array;
 }
 
-struct scpArray* scpArray_fclone(struct scpArray* array, void(*copy_data)(void* data, void* new_data)) {
+struct scpArray* scpArray_fclone(struct scpArray* array, scpFunc_copy copy_data) {
 	struct scpArray* new_array = (struct scpArray*)malloc(sizeof(struct scpArray));
 	new_array->type = &scpArray;
 	new_array->data = malloc(array->count * array->size);
@@ -97,7 +98,7 @@ void scpArray_copy(struct scpArray* array, struct scpArray* new_array) {
 	new_array->size = array->size;
 }
 
-void scpArray_fcopy(struct scpArray* array, struct scpArray* new_array, void(*copy_data)(void* data, void* new_data)) {
+void scpArray_fcopy(struct scpArray* array, struct scpArray* new_array, scpFunc_copy copy_data) {
 	new_array->type = &scpArray;
 	new_array->data = malloc(array->count * array->size);
 	for (size_t i = 0; i < array->count * array->size; i += array->size)
@@ -117,17 +118,17 @@ void* scpArray_at(struct scpArray* array, size_t index) {
 	return (void*)((char*)array->data + index * array->size);
 }
 
-void scpArray_map_index(struct scpArray* array, void(*f)(void* data, size_t i, size_t count)) {
+void scpArray_map_index(struct scpArray* array, scpFunc_map_index f) {
 	for (size_t i = 0; i < array->count; ++i)
 		f((void*)((char*)array->data + i * array->size), i, array->count);
 }
 
-void scpArray_map(struct scpArray* array, void(*f)(void* data)) {
+void scpArray_map(struct scpArray* array, scpFunc_map f) {
 	for (size_t i = 0; i < array->count; ++i)
 		f((void*)((char*)array->data + i * array->size));
 }
 
-void scpArray_print(struct scpArray* array, void(*print_element)(void* data)) {
+void scpArray_print(struct scpArray* array, scpFunc_print print_element) {
 	fputc('[', stdout);
 	for (size_t i = 0; i < array->count; ++i) {
 		print_element((void*)((char*)array->data + i * array->size));
