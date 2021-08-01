@@ -120,7 +120,7 @@ struct scpIO* scpIO_new(scpIOStreamType stream_type, void* stream, scpIOWay way)
 		io->stream.string = (struct scpString*)stream;
 		break;
 	default:
-		scpException_InvalidArgument("scpIO_new: invalid scpIOStreamType\n");
+		SCP_EXCEPTION(scpException_InvalidArgument, "scpIO_new: invalid scpIOStreamType\n");
 	}
 	io->way = way;
 	return io;
@@ -133,7 +133,7 @@ void scpIO_delete(struct scpIO* io) {
 
 int scpIO_putc(struct scpIO* io, int c) {
 	if (!(io->way & scpIOWay_OUT))
-		scpException_InvalidArgument("scpIO_putc: invalid scpIOWay\n");
+		SCP_EXCEPTION(scpException_InvalidArgument, "scpIO_putc: invalid scpIOWay\n");
 	int r;
 	switch (io->stream_type) {
 	case scpIOStreamType_scpIOS:
@@ -143,16 +143,16 @@ int scpIO_putc(struct scpIO* io, int c) {
 		r = fputc(c, io->stream.file);
 		break;
 	case scpIOStreamType_scpString:
-		scpException_InvalidArgument("scpIO_putc: unsupported scpIOStreamType_scpString\n");
+		SCP_EXCEPTION(scpException_InvalidArgument, "scpIO_putc: unsupported scpIOStreamType_scpString\n");
 	default:
-		scpException_InvalidArgument("scpIO_putc: invalid scpIOStreamType\n");
+		SCP_EXCEPTION(scpException_InvalidArgument, "scpIO_putc: invalid scpIOStreamType\n");
 	}
 	return r;
 }
 
 int scpIO_getc(struct scpIO* io) {
 	if (!(io->way & scpIOWay_IN))
-		scpException_InvalidArgument("scpIO_getc: invalid scpIOWay\n");
+		SCP_EXCEPTION(scpException_InvalidArgument, "scpIO_getc: invalid scpIOWay\n");
 	int r;
 	switch (io->stream_type) {
 	case scpIOStreamType_scpIOS:
@@ -162,16 +162,16 @@ int scpIO_getc(struct scpIO* io) {
 		r = fgetc(io->stream.file);
 		break;
 	case scpIOStreamType_scpString:
-		scpException_InvalidArgument("scpIO_getc: unsupported scpIOStreamType_scpString\n");
+		SCP_EXCEPTION(scpException_InvalidArgument, "scpIO_getc: unsupported scpIOStreamType_scpString\n");
 	default:
-		scpException_InvalidArgument("scpIO_getc: invalid scpIOStreamType\n");
+		SCP_EXCEPTION(scpException_InvalidArgument, "scpIO_getc: invalid scpIOStreamType\n");
 	}
 	return r;
 }
 
 int scpIO_puts(struct scpIO* io, char* string) {
 	if (!(io->way & scpIOWay_OUT))
-		scpException_InvalidArgument("scpIO_puts: invalid scpIOWay\n");
+		SCP_EXCEPTION(scpException_InvalidArgument, "scpIO_puts: invalid scpIOWay\n");
 	int r;
 	switch (io->stream_type) {
 	case scpIOStreamType_scpIOS:
@@ -181,16 +181,16 @@ int scpIO_puts(struct scpIO* io, char* string) {
 		r = fputs(string, io->stream.file);
 		break;
 	case scpIOStreamType_scpString:
-		scpException_InvalidArgument("scpIO_puts: unsupported scpIOStreamType_scpString\n");
+		SCP_EXCEPTION(scpException_InvalidArgument, "scpIO_puts: unsupported scpIOStreamType_scpString\n");
 	default:
-		scpException_InvalidArgument("scpIO_puts: invalid scpIOStreamType\n");
+		SCP_EXCEPTION(scpException_InvalidArgument, "scpIO_puts: invalid scpIOStreamType\n");
 	}
 	return r;
 }
 
 char* scpIO_gets(struct scpIO* io, char* buffer, size_t buffer_size) {
 	if (!(io->way & scpIOWay_IN))
-		scpException_InvalidArgument("scpIO_gets: invalid scpIOWay\n");
+		SCP_EXCEPTION(scpException_InvalidArgument, "scpIO_gets: invalid scpIOWay\n");
 	char* r;
 	switch (io->stream_type) {
 	case scpIOStreamType_scpIOS:
@@ -198,13 +198,13 @@ char* scpIO_gets(struct scpIO* io, char* buffer, size_t buffer_size) {
 		break;
 	case scpIOStreamType_FILE:
 		if (buffer_size & ~(size_t)__INT_MAX__)
-			scpException_InvalidArgument("scpIO_gets: invalid buffer_size for scpIOStreamType_FILE\n");
+			SCP_EXCEPTION(scpException_InvalidArgument, "scpIO_gets: invalid buffer_size for scpIOStreamType_FILE\n");
 		r = fgets(buffer, (int)buffer_size, io->stream.file);
 		break;
 	case scpIOStreamType_scpString:
-		scpException_InvalidArgument("scpIO_gets: unsupported scpIOStreamType_scpString\n");
+		SCP_EXCEPTION(scpException_InvalidArgument, "scpIO_gets: unsupported scpIOStreamType_scpString\n");
 	default:
-		scpException_InvalidArgument("scpIO_gets: invalid scpIOStreamType\n");
+		SCP_EXCEPTION(scpException_InvalidArgument, "scpIO_gets: invalid scpIOStreamType\n");
 	}
 	return r;
 }
@@ -219,7 +219,7 @@ int scpIO_printf(struct scpIO* io, char* format, ...) {
 
 int scpIO_vprintf(struct scpIO* io, char* format, va_list args) {
 	if (!(io->way & scpIOWay_OUT))
-		scpException_InvalidArgument("scpIO_vprintf: invalid scpIOWay\n");
+		SCP_EXCEPTION(scpException_InvalidArgument, "scpIO_vprintf: invalid scpIOWay\n");
 	int r;
 	switch (io->stream_type) {
 	case scpIOStreamType_scpIOS:
@@ -229,9 +229,9 @@ int scpIO_vprintf(struct scpIO* io, char* format, va_list args) {
 		r = vfprintf(io->stream.file, format, args);
 		break;
 	case scpIOStreamType_scpString:
-		scpException_InvalidArgument("scpIO_vprintf: unsupported scpIOStreamType_scpString\n");
+		SCP_EXCEPTION(scpException_InvalidArgument, "scpIO_vprintf: unsupported scpIOStreamType_scpString\n");
 	default:
-		scpException_InvalidArgument("scpIO_vprintf: invalid scpIOStreamType\n");
+		SCP_EXCEPTION(scpException_InvalidArgument, "scpIO_vprintf: invalid scpIOStreamType\n");
 	}
 	return r;
 }
@@ -246,7 +246,7 @@ int scpIO_scanf(struct scpIO* io, char* format, ...) {
 
 int scpIO_vscanf(struct scpIO* io, char* format, va_list args) {
 	if (!(io->way & scpIOWay_IN))
-		scpException_InvalidArgument("scpIO_vscanf: invalid scpIOWay\n");
+		SCP_EXCEPTION(scpException_InvalidArgument, "scpIO_vscanf: invalid scpIOWay\n");
 	int r;
 	switch (io->stream_type) {
 	case scpIOStreamType_scpIOS:
@@ -256,9 +256,9 @@ int scpIO_vscanf(struct scpIO* io, char* format, va_list args) {
 		r = vfscanf(io->stream.file, format, args);
 		break;
 	case scpIOStreamType_scpString:
-		scpException_InvalidArgument("scpIO_vscanf: unsupported scpIOStreamType_scpString\n");
+		SCP_EXCEPTION(scpException_InvalidArgument, "scpIO_vscanf: unsupported scpIOStreamType_scpString\n");
 	default:
-		scpException_InvalidArgument("scpIO_vscanf: invalid scpIOStreamType\n");
+		SCP_EXCEPTION(scpException_InvalidArgument, "scpIO_vscanf: invalid scpIOStreamType\n");
 	}
 	return r;
 }
@@ -274,9 +274,9 @@ int scpIO_flush(struct scpIO* io) {
 		r = fflush(io->stream.file);
 		break;
 	case scpIOStreamType_scpString:
-		scpException_InvalidArgument("scpIO_flush: unsupported scpIOStreamType_scpString\n");
+		SCP_EXCEPTION(scpException_InvalidArgument, "scpIO_flush: unsupported scpIOStreamType_scpString\n");
 	default:
-		scpException_InvalidArgument("scpIO_flush: invalid scpIOStreamType\n");
+		SCP_EXCEPTION(scpException_InvalidArgument, "scpIO_flush: invalid scpIOStreamType\n");
 	}
 	return r;
 }
