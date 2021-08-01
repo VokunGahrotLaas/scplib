@@ -7,12 +7,13 @@ else
 endif
 
 CC = gcc
-CCFLAGS = $(DEBUGFLAGS) -std=gnu17 -Wall -Wextra -Wpedantic -Wconversion -Werror
+CCFLAGS = $(DEBUGFLAGS) -std=gnu2x -Wall -Wextra -Wconversion -Werror
 LDFLAGS = 
 INCLUDES = -I. -I/usr/include
 LIBS = -L/usr/lib
 TESTS = $(wildcard tests/*.c)
 TESTS_EXEC = $(subst .c,,$(TESTS))
+STRICT_TESTS_EXEC = $(addprefix tests/strict_,$(subst tests/,,$(TESTS_EXEC)))
 
 empty = 
 space = $(empty) $(empty)
@@ -38,12 +39,15 @@ run_%: %
 test_%: tests/test_%.c
 	@$(CC) -o tests/$@ $< $(LDFLAGS) $(LIBS) $(CCFLAGS) $(INCLUDES)
 
+strict_test_%: tests/test_%.c
+	@$(CC) -o tests/$@ $< $(LDFLAGS) $(LIBS) $(CCFLAGS) -Wpedantic $(INCLUDES)
+
 clean:
 
 mrproper: clean
-	@rm -rf $(TESTS_EXEC)
+	@rm -rf $(TESTS_EXEC) $(STRICT_TESTS_EXEC)
 
 install:
 	@cp -r ./scp /usr/include/
 
-.PHONY: all clear mrproper run_% test_% tests install
+.PHONY: all clear mrproper run_% test_% strict_test_% tests install
