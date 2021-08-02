@@ -45,6 +45,12 @@ test_%: $(TESTS_DIR)/test_%.c
 strict_test_%: $(TESTS_DIR)/test_%.c
 	@$(CC) -o tests/$@ $< $(LDFLAGS) $(LIBS) $(CCFLAGS) $(INCLUDES) -Wpedantic -DSCP_PEDANTIC
 
+test_shell: $(TESTS_DIR)/test_shell.c
+	@$(CC) -o tests/$@ $< $(LDFLAGS) $(LIBS) $(CCFLAGS) $(INCLUDES) -lncurses
+
+strict_test_shell: $(TESTS_DIR)/test_shell.c
+	@$(CC) -o tests/$@ $< $(LDFLAGS) $(LIBS) $(CCFLAGS) $(INCLUDES) -lncurses -Wpedantic -DSCP_PEDANTIC
+
 clean:
 
 mrproper: clean
@@ -53,4 +59,4 @@ mrproper: clean
 install:
 	@cp -r ./scp /usr/include/
 
-.PHONY: all clear mrproper run_% test_% strict_test_% tests install
+.PHONY: all tests strict_tests run_% test_% strict_test_% test_shell strict_test_shell clear mrproper install
