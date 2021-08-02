@@ -8,7 +8,7 @@ struct scpArray* scpPrimes_array = NULL;
 const uint64_t* scpPrimes_gen(uint64_t n);
 uint64_t scpPrimes_next(uint64_t n);
 
-__attribute__((constructor)) void scpPrimes_constructor(void) {
+scpMacro_constructor static void scpPrimes_constructor(void) {
 	scpPrimes_gen(1000);
 }
 

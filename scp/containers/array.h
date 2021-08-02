@@ -17,10 +17,10 @@ struct scpArray {
 	size_t size;
 };
 
-struct scpArray* scpArray_new(size_t count, size_t size);
+scpMacro_malloc struct scpArray* scpArray_new(size_t count, size_t size);
 void scpArray_delete(struct scpArray* array);
-struct scpArray* scpArray_clone(struct scpArray* array);
-struct scpArray* scpArray_fclone(struct scpArray* array, scpFunc_copy copy_data);
+scpMacro_malloc struct scpArray* scpArray_clone(struct scpArray* array);
+scpMacro_malloc struct scpArray* scpArray_fclone(struct scpArray* array, scpFunc_copy copy_data);
 void scpArray_copy(struct scpArray* array, struct scpArray* new_array);
 void scpArray_fcopy(struct scpArray* array, struct scpArray* new_array, scpFunc_copy copy_data);
 void scpArray_resize(struct scpArray* array, size_t count);
