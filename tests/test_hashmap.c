@@ -4,13 +4,10 @@
 
 #include "scp/containers/hashmap.h"
 #include "scp/hash.h"
-
-int cmp_string(const void* a, const void* b) {
-	return strcmp((const char*)a, (const char*)b);
-}
+#include "scp/cmp.h"
 
 int main(void) {
-	struct scpHashMap* hashmap = scpHashMap.new(scpHash_stringA, scpHash_stringB, cmp_string);
+	struct scpHashMap* hashmap = scpHashMap.new(scpHash_stringA, scpHash_stringB, scpCmp_string);
 
 	const char* keys[] = { "hi", "salut", "truc" };
 	int values[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
