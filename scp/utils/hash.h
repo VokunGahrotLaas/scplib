@@ -7,7 +7,7 @@
 
 #include "scp/maths/binpow.h"
 
-inline uint64_t scpHash_base_string(const char* s, const uint64_t a) {
+uint64_t scpHash_base_string(const char* s, const uint64_t a) {
 	uint64_t hash = 0;
 	const size_t len_s = strlen(s);
 	for (size_t i = 0; i < len_s; ++i)
