@@ -3,8 +3,11 @@
 #include <string.h>
 
 #include <unistd.h>
+#include <signal.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+
+#include <ncurses.h>
 
 #include "scp/containers/hashmap.h"
 #include "scp/utils.h"
@@ -18,6 +21,12 @@ typedef struct builtin_pair {
 	builtin_func value;
 } builtin_pair;
 
+scpMacro_constructor void ncurses_constructor(void);
+scpMacro_destructor void ncurses_desctructor(void);
+
+static volatile sig_atomic_t sigint_recieved = 0;
+void signal_handler(int signo);
+
 size_t count_spaces(const char* str);
 void make_argv(size_t argc, char** argv, char* buffer);
 char* to_lower(const char* str);
@@ -27,10 +36,15 @@ void builtin_func_args(size_t argc, char** argv);
 void builtin_func_exit(size_t argc, char** argv);
 
 int main(void) {
+	if (signal(SIGINT, signal_handler) == SIG_ERR) SCP_EXCEPTION(scpException_Exception, "signal handler failed");
+
+	pid_t pid;
+	int status;
+
 	char* path = strdup(getenv("PATH"));
 	if (!path) SCP_EXCEPTION(scpException_Exception, "no path variable in env");
 	if (*path == '\0') SCP_EXCEPTION(scpException_Exception, "empty path variable in env");
-	//printf("PATH='%s'\n\n", raw_path);
+
 	char** pathv = (char**)calloc(2, sizeof(char*));
 	*pathv = path;
 	size_t pathc = 1;
@@ -42,11 +56,6 @@ int main(void) {
 			path[i] = '\0';
 		}
 	}
-
-	/*printf("[ '%s'", *path);
-	for (size_t i = 1; i < pathc; ++i)
-		printf(", '%s'", path[i]);
-	printf(" ]\n");*/
 
 	builtin_pair builtin_pairs[] = {
 		{ "ping", builtin_func_ping },
@@ -64,8 +73,14 @@ int main(void) {
 	fputs("Welcome to scp custom shell!\n", stdout);
 
 	while (!feof(stdin)) {
-		fputs("\n> ", stdout);
+		fputs("\n$ ", stdout);
 		fgets(buffer, BUFFER_SIZE, stdin);
+
+		if (sigint_recieved) {
+			sigint_recieved = 0;
+			printf("mean sigint\n");
+			continue;
+		}
 
 		size_t new_argc = count_spaces(buffer) + 1;
 		char** new_argv = (char**)calloc((new_argc + 1), sizeof(char*));
@@ -73,9 +88,6 @@ int main(void) {
 		make_argv(new_argc, new_argv, buffer);
 		char* cmd = to_lower(*new_argv);
 		builtin_pair* pair = (builtin_pair*)scpHashMap.search(builtins, cmd);
-
-		pid_t pid;
-		int status;
 
 		if (pair)
 			pair->value(new_argc, new_argv);
@@ -92,7 +104,6 @@ int main(void) {
 				for (size_t j = 0; j < old_cmd_len; ++j)
 					cmd[path_len + 1 + j] = old_cmd[j];
 				cmd[path_len + 1 + old_cmd_len] = '\0';
-				//printf("trying path: %s\n", cmd);
 				*new_argv = cmd;
 				execve(*new_argv, new_argv, __environ);
 			}
@@ -112,6 +123,24 @@ int main(void) {
 	scpHashMap.delete(builtins);
 	free(path);
 	return EXIT_SUCCESS;
+}
+
+scpMacro_constructor void ncurses_constructor(void) {
+	//initscr();
+}
+
+scpMacro_destructor void ncurses_desctructor(void) {
+	//endwin();
+}
+
+void signal_handler(int signo) {
+	switch (signo) {
+		case SIGINT:
+			sigint_recieved = 1;
+			break;
+		default:
+			SCP_EXCEPTION(scpException_Exception, "unhandled signal");
+	}
 }
 
 size_t count_spaces(const char* buffer) {
