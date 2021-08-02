@@ -8,11 +8,11 @@
 
 #ifndef __GNUC__
 #define  __attribute__(x)
-#else
+#endif
+
 #define scpMacro_unused __attribute__((unused))
 #define scpMacro_format_printf(m, n) __attribute__((format(printf, m, n)))
 #define scpMacro_format_scanf(m, n) __attribute__((format(scanf, m, n)))
-#endif
 
 #define SCP_TO_STRING_NX(x) #x
 #define SCP_TO_STRING(x) SCP_TO_STRING_NX(x)
@@ -21,10 +21,10 @@
 #define SCP_CONCAT(a, b) SCP_CONCAT_NX(a, b)
 
 #ifndef SCP_PEDANTIC
-
 #define SCP_LAMBDA(return_type, body) ({ return_type _ body _; })
-
 #endif // SCP_PEDANTIC
+
+#define SCP_SWAP(type, a, b) { type tmp = a; a = b; b = tmp; }
 
 typedef void (*scpFunc_copy)(const void* data, void* new_data);
 typedef void* (*scpFunc_clone)(const void* data);

@@ -1,6 +1,10 @@
 #ifndef SCP_BINTREE_H
 #define SCP_BINTREE_H
 
+#ifndef SCP_PEDANTIC
+#warning "don't use this for now, it's an old code, work in progress..."
+#endif
+
 typedef struct scpBinTree {
 	void* data;
 	struct scpBinTree* left;

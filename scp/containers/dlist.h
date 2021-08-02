@@ -3,6 +3,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+
+#ifndef SCP_PEDANTIC
+#warning "don't use this for now, it's an old code, work in progress..."
+#endif
+
 typedef struct scpDListNode {
 	void* data;
 	struct scpDListNode* prev;
