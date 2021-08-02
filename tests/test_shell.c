@@ -27,19 +27,19 @@ void builtin_func_args(size_t argc, char** argv);
 void builtin_func_exit(size_t argc, char** argv);
 
 int main(void) {
-	char* raw_path = strdup(getenv("PATH"));
-	if (!raw_path) SCP_EXCEPTION(scpException_Exception, "no path variable in env");
-	if (*raw_path == '\0') SCP_EXCEPTION(scpException_Exception, "empty path variable in env");
+	char* path = strdup(getenv("PATH"));
+	if (!path) SCP_EXCEPTION(scpException_Exception, "no path variable in env");
+	if (*path == '\0') SCP_EXCEPTION(scpException_Exception, "empty path variable in env");
 	//printf("PATH='%s'\n\n", raw_path);
-	char** path = (char**)calloc(2, sizeof(char*));
-	*path = raw_path;
+	char** pathv = (char**)calloc(2, sizeof(char*));
+	*pathv = path;
 	size_t pathc = 1;
-	for (size_t i = 0; raw_path[i]; ++i) {
-		if (raw_path[i] == ':') {
-			path = (char**)realloc(path, (++pathc + 1) * sizeof(char*));
-			path[pathc - 1] = raw_path + i + 1;
-			path[pathc] = NULL;
-			raw_path[i] = '\0';
+	for (size_t i = 0; path[i]; ++i) {
+		if (path[i] == ':') {
+			pathv = (char**)realloc(pathv, (++pathc + 1) * sizeof(char*));
+			pathv[pathc - 1] = path + i + 1;
+			pathv[pathc] = NULL;
+			path[i] = '\0';
 		}
 	}
 
@@ -84,10 +84,10 @@ int main(void) {
 			char* old_cmd = strdup(*new_argv);
 			size_t old_cmd_len = strlen(old_cmd);
 			for (size_t i = 0; i < pathc; ++i) {
-				size_t path_len = (size_t)strlen(path[i]);
+				size_t path_len = (size_t)strlen(pathv[i]);
 				cmd = realloc(cmd, (path_len + old_cmd_len + 2) * sizeof(char));
 				for (size_t j = 0; j < path_len; ++j)
-					cmd[j] = path[i][j];
+					cmd[j] = pathv[i][j];
 				cmd[path_len] = '/';
 				for (size_t j = 0; j < old_cmd_len; ++j)
 					cmd[path_len + 1 + j] = old_cmd[j];
@@ -110,7 +110,7 @@ int main(void) {
 	}
 
 	scpHashMap.delete(builtins);
-	free(raw_path);
+	free(path);
 	return EXIT_SUCCESS;
 }
 
