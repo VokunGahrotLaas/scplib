@@ -5,7 +5,6 @@
 #include <stdio.h>
 
 #include "scp/maths/primes.h"
-#include "scp/exceptions.h"
 
 #define scpHashMap_BASE_SIZE 50
 

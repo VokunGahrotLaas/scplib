@@ -7,17 +7,26 @@
 #include <stdnoreturn.h>
 
 #ifndef __GNUC__
-#define  __attribute__(x)
+#define  __attribute__(x) /*NOTHING*/
 #endif
 
+#define scpMacro_deprecated __attribute__((deprecated))
+#define scpMacro_used __attribute__((used))
 #define scpMacro_unused __attribute__((unused))
+#define scpMacro_noinline __attribute__((noinline))
+#define scpMacro_always_inline __attribute__((always_inline))
+#define scpMacro_constructor __attribute__((constructor))
+#define scpMacro_destructor __attribute__((destructor))
+#define scpMacro_pure __attribute__((pure))
+#define scpMacro_const __attribute__((const))
+#define scpMacro_malloc __attribute__((malloc))
 #define scpMacro_format_printf(m, n) __attribute__((format(printf, m, n)))
 #define scpMacro_format_scanf(m, n) __attribute__((format(scanf, m, n)))
 
 #define SCP_TO_STRING_NX(x) #x
 #define SCP_TO_STRING(x) SCP_TO_STRING_NX(x)
 
-#define SCP_CONCAT_NX(a, b) a ## b
+#define SCP_CONCAT_NX(a, b) a##b
 #define SCP_CONCAT(a, b) SCP_CONCAT_NX(a, b)
 
 #ifndef SCP_PEDANTIC

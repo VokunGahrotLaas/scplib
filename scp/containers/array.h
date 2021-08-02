@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "scp/macros.h"
+#include "scp/utils/macros.h"
 #include "scp/exceptions.h"
 
 struct scpArrayType;

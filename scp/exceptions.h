@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-#include "scp/macros.h"
+#include "scp/utils/macros.h"
 
 #define _SCP_MAKE_NEW_EXCEPTION(name)																			\
 scpMacro_format_printf(4, 5)																					\

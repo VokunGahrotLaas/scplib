@@ -9,8 +9,8 @@
 int main(void) {
 	for (uint64_t i = 0; i < 16; ++i) {
 		printf("next prime to %"PRId64": %"PRId64"\n", i, scpPrimes_next(i));
-		scpArray.print(scpPrimes_array, print_uint64_t);
-		puts("");
+		scpArray.print(scpPrimes_array, scpPrint_uint64_t);
+		printf("\n");
 	}
 	return EXIT_SUCCESS;
 }

@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "scp/utils/macros.h"
+
 #ifndef SCP_PEDANTIC
 #warning "don't use this for now, it's an old code, work in progress..."
 #endif
@@ -22,19 +24,19 @@ scpDListNode* scpDListNode_create(void* data);
 
 scpDList* scpDList_create(void);
 scpDList* scpDList_copy(scpDList* other);
-scpDList* scpDList_fcopy(scpDList* other, void*(*copy_data)(void*));
+scpDList* scpDList_fcopy(scpDList* other, scpFunc_clone clone_data);
 void scpDList_destroy(scpDList* list);
 size_t scpDList_size(scpDList* list);
 void scpDList_push_front(scpDList* list, void* data);
 void scpDList_push_back(scpDList* list, void* data);
 void* scpDList_pop_front(scpDList* list);
 void* scpDList_pop_back(scpDList* list);
-void scpDList_map_index(scpDList* list, void(*f)(void*, size_t, size_t));
-void scpDList_rmap_index(scpDList* list, void(*f)(void*, size_t, size_t));
-void scpDList_map(scpDList* list, void(*f)(void*));
-void scpDList_rmap(scpDList* list, void(*f)(void*));
-void scpDList_print(scpDList* list, void(*print_element)(void*));
-void scpDList_rprint(scpDList* list, void(*print_element)(void*));
+void scpDList_map_index(scpDList* list, scpFunc_map_index f);
+void scpDList_rmap_index(scpDList* list, scpFunc_map_index f);
+void scpDList_map(scpDList* list, scpFunc_map f);
+void scpDList_rmap(scpDList* list, scpFunc_map f);
+void scpDList_print(scpDList* list, scpFunc_print print_element);
+void scpDList_rprint(scpDList* list, scpFunc_print print_element);
 
 scpDListNode* scpDListNode_create(void* data) {
 	scpDListNode* node = (scpDListNode*)malloc(sizeof(scpDListNode));
@@ -66,14 +68,14 @@ scpDList* scpDList_copy(scpDList* other) {
 	return list;
 }
 
-scpDList* scpDList_fcopy(scpDList* other, void*(*copy_data)(void*)) {
+scpDList* scpDList_fcopy(scpDList* other, scpFunc_clone clone_data) {
 	scpDList* list = scpDList_create();
 	if (other->first == NULL) return list;
 
-	list->first = scpDListNode_create(copy_data(other->first->data));
+	list->first = scpDListNode_create(clone_data(other->first->data));
 	scpDListNode* node = list->first; scpDListNode* other_node = other->first;
 	for (; other_node->next != NULL; node = node->next, other_node = other_node->next) {
-		node->next = scpDListNode_create(copy_data(other_node->next->data));
+		node->next = scpDListNode_create(clone_data(other_node->next->data));
 		node->next->prev = node;
 	}
 
@@ -198,14 +200,14 @@ void* scpDList_pop_back(scpDList* list) {
 	return data;
 }
 
-void scpDList_map_index(scpDList* list, void(*f)(void*, size_t, size_t)) {
+void scpDList_map_index(scpDList* list, scpFunc_map_index f) {
 	size_t size = scpDList_size(list);
 	size_t i = 0;
 	for (scpDListNode* node = list->first; node != NULL; node = node->next)
 		f(node->data, i++, size);
 }
 
-void scpDList_rmap_index(scpDList* list, void(*f)(void*, size_t, size_t)) {
+void scpDList_rmap_index(scpDList* list, scpFunc_map_index f) {
 	size_t size = scpDList_size(list);
 	size_t i = 0;
 	for (scpDListNode* node = list->last; node != NULL; node = node->prev)
@@ -222,7 +224,7 @@ void scpDList_rmap(scpDList* list, void(*f)(void*)) {
 		f(node->data);
 }
 
-void scpDList_print(scpDList* list, void(*print_element)(void*)) {
+void scpDList_print(scpDList* list, scpFunc_print print_element) {
 	fputc('[' ,stdout);
 	for (scpDListNode* node = list->first; node != NULL; node = node->next) {
 		print_element(node->data);
@@ -232,7 +234,7 @@ void scpDList_print(scpDList* list, void(*print_element)(void*)) {
 	fputc(']', stdout);
 }
 
-void scpDList_rprint(scpDList* list, void(*print_element)(void*)) {
+void scpDList_rprint(scpDList* list, scpFunc_print print_element) {
 	fputc('[' ,stdout);
 	for (scpDListNode* node = list->last; node != NULL; node = node->prev) {
 		print_element(node->data);

@@ -3,10 +3,10 @@
 
 #include "scp/containers/list.h"
 
-static inline void print_size_t(void* data);
-static inline void print_size_tList(const char* name, scpList* list);
-static inline void* copy_size_t(void* other);
-static inline void square(void* data);
+#include "utils.h"
+
+static void print_size_tList(const char* name, scpList* list);
+static void square(void* data);
 
 int main(void) {
 	size_t size = 10;
@@ -20,7 +20,7 @@ int main(void) {
 		scpList_push_front(list, data + i);
 
 	scpList* copy = scpList_copy(list);
-	scpList* fcopy = scpList_fcopy(list, copy_size_t);
+	scpList* fcopy = scpList_fcopy(list, scpClone_size_t);
 
 	print_size_tList("l", list);
 	print_size_tList("c", copy);
@@ -59,22 +59,12 @@ int main(void) {
 	return EXIT_SUCCESS;
 }
 
-static inline void print_size_t(void* data) {
-	printf("%zu", *(size_t*)data);
-}
-
-static inline void print_size_tList(const char* name, scpList* list) {
+static void print_size_tList(const char* name, scpList* list) {
 	printf("%s: ", name);
-	scpList_print(list, print_size_t);
+	scpList_print(list, scpPrint_size_t);
 	printf("\n");
 }
 
-static inline void* copy_size_t(void* other) {
-	size_t* data = malloc(sizeof(size_t));
-	*data = *(size_t*)other;
-	return data;
-}
-
-static inline void square(void* data) {
+static void square(void* data) {
 	*(size_t*)data *= *(size_t*)data;
 }

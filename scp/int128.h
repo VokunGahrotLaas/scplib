@@ -6,7 +6,7 @@
 #include <stdint.h>
 #include <inttypes.h>
 
-#include "scp/macros.h"
+#include "scp/utils/macros.h"
 
 #ifndef __SIZEOF_INT128__
 #error "no int128 (remove -pedantic)"
