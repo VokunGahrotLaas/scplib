@@ -7,8 +7,6 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#include <ncurses.h>
-
 #include "scp/containers/hashmap.h"
 #include "scp/utils.h"
 
@@ -20,9 +18,6 @@ typedef struct builtin_pair {
 	const char* key;
 	builtin_func value;
 } builtin_pair;
-
-scpMacro_constructor void ncurses_constructor(void);
-scpMacro_destructor void ncurses_desctructor(void);
 
 static volatile sig_atomic_t sigint_recieved = 0;
 void signal_handler(int signo);
@@ -108,13 +103,17 @@ int main(void) {
 				execve(*new_argv, new_argv, __environ);
 			}
 			free(old_cmd);
-			fputs("invalid command\n", stdout);
+			fputs("invalid command", stdout);
 			exit(EXIT_FAILURE);
 		}
 
 		wait(&status);
+		if (sigint_recieved) {
+			sigint_recieved = 0;
+			printf("\nrecieved SIGINT");
+		}
 		if (status)
-			printf("exited with code %i", status);
+			printf("\nexited with code %i\n", status);
 
 		free(cmd);
 		free(new_argv);
@@ -123,14 +122,6 @@ int main(void) {
 	scpHashMap.delete(builtins);
 	free(path);
 	return EXIT_SUCCESS;
-}
-
-scpMacro_constructor void ncurses_constructor(void) {
-	//initscr();
-}
-
-scpMacro_destructor void ncurses_desctructor(void) {
-	//endwin();
 }
 
 void signal_handler(int signo) {
