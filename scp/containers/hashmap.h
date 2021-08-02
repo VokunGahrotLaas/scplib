@@ -1,7 +1,6 @@
 #ifndef SCP_HASHMAP_H
 #define SCP_HASHMAP_H
 
-
 #include <stdlib.h>
 #include <stdio.h>
 
