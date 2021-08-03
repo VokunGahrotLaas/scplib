@@ -69,7 +69,7 @@ struct scpVector* scpVector_new(size_t count, size_t size) {
 	struct scpVector* vector = (struct scpVector*)malloc(sizeof(struct scpVector));
 	vector->type = &scpVector;
 	vector->data = NULL;
-	vector->count = count;
+	vector->count = 0;
 	vector->size = size;
 	vector->reserved = 0;
 	scpVector_reserve(vector, count);

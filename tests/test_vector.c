@@ -6,6 +6,7 @@
 
 int main(void) {
 	struct scpVector* vector = scpVector.new(10, sizeof(size_t));
+	scpVector.resize(vector, 10);
 	for (size_t i = 0; i < vector->count; ++i)
 		((size_t*)vector->data)[i] = i;
 	scpVector.print(vector, scpPrint_size_t);
