@@ -32,12 +32,12 @@ int main(void) {
 	printf(" %zu / %zu \n", vector->count, vector->reserved);
 
 	for (size_t i = 0; i < 15; ++i)
-		*(size_t*)scpVector_append(vector) = i;
+		*(size_t*)scpVector.append(vector) = i;
 	scpVector.print(vector, scpPrint_size_t);
 	printf(" %zu / %zu \n", vector->count, vector->reserved);
 
 	for (size_t i = 0; i < 15; ++i)
-		scpVector_pop(vector);
+		scpVector.pop(vector);
 	scpVector.print(vector, scpPrint_size_t);
 	printf(" %zu / %zu \n", vector->count, vector->reserved);
 
