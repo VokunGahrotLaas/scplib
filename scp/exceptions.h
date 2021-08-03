@@ -7,9 +7,11 @@
 
 #include "scp/utils/macros.h"
 
+#ifndef SCP_STDC_PRE99
+
 #define _SCP_MAKE_NEW_EXCEPTION(name)																		\
 scpAttribute_format_printf(4, 5) scpMacro_noreturn															\
-void scpException_ ## name(const char* file, int line, const char* func, const char* format, ...) {			\
+void scpException_##name(const char* file, int line, const char* func, const char* format, ...) {			\
 	fprintf(stderr, "scpException "SCP_TO_STRING(name)" - \"%s\" line %i in %s: \"", file, line, func);		\
 	va_list args;																							\
 	va_start(args, format);																					\
@@ -19,12 +21,30 @@ void scpException_ ## name(const char* file, int line, const char* func, const c
 	abort();																								\
 }
 
+#define SCP_EXCEPTION(name, ...) name(__FILE__, __LINE__, __func__, __VA_ARGS__)
+
+#else /* SCP_STDC_PRE99 */
+
+#define _SCP_MAKE_NEW_EXCEPTION(name)																		\
+scpAttribute_format_printf(3, 4) scpMacro_noreturn															\
+void scpException_##name(const char* file, int line, const char* format, ...) {								\
+	fprintf(stderr, "scpException "SCP_TO_STRING(name)" - \"%s\" line %i: \"", file, line);					\
+	va_list args;																							\
+	va_start(args, format);																					\
+	vfprintf(stderr, format, args);																			\
+	va_end(args);																							\
+	fputs("\"\n", stderr);																					\
+	abort();																								\
+}
+
+#define SCP_EXCEPTION(name, ...) name(__FILE__, __LINE__, __VA_ARGS__)
+
+#endif /* SCP_STDC_PRE99 */
+
 _SCP_MAKE_NEW_EXCEPTION(Exception)
 _SCP_MAKE_NEW_EXCEPTION(OutOfBound)
 _SCP_MAKE_NEW_EXCEPTION(NullPointer)
 _SCP_MAKE_NEW_EXCEPTION(NotImplemented)
 _SCP_MAKE_NEW_EXCEPTION(InvalidArgument)
 
-#define SCP_EXCEPTION(name, ...) name(__FILE__, __LINE__, __func__, __VA_ARGS__)
-
-#endif // SCP_EXCEPTIONS_H
+#endif /* SCP_EXCEPTIONS_H */

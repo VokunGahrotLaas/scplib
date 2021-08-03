@@ -175,4 +175,4 @@ void scpList_print(scpList* list, scpFunc_print print_element) {
 	fputc(']', stdout);
 }
 
-#endif // SCP_LIST_H
+#endif /* SCP_LIST_H */

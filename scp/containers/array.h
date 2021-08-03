@@ -138,4 +138,4 @@ void scpArray_print(struct scpArray* array, scpFunc_print print_element) {
 	fputc(']', stdout);
 }
 
-#endif // SCP_ARRAY_H
+#endif /* SCP_ARRAY_H */

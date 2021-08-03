@@ -5,24 +5,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#ifndef __STDC_VERSION__
-#warning "stdc before C99 are not supported"
-#elif __STDC_VERSION__ == 202000
-#define SCP_STDC2X
-#elif __STDC_VERSION__ == 201710
-#define SCP_STDC18
-#define SCP_STDC17
-#elif __STDC_VERSION__ == 201112
-#define SCP_STDC11
-#define SCP_STDC1X
-#elif __STDC_VERSION__ == 199901
-#define SCP_STDC99
-#else
-#warning "unsupported C version"
-#endif
-
 #ifndef __GNUC__
-#define  __attribute__(x) /*NOTHING*/
+#define  __attribute__(x) /**/
 #endif
 
 #define scpAttribute_noreturn __attribute__((noreturn))
@@ -39,10 +23,36 @@
 #define scpAttribute_format_printf(m, n) __attribute__((format(printf, m, n)))
 #define scpAttribute_format_scanf(m, n) __attribute__((format(scanf, m, n)))
 
-#ifdef SCP_STDC99
+
+#ifndef __STDC_VERSION__
+#define SCP_STDC_PRE11
+#define SCP_STDC_PRE99
+#elif __STDC_VERSION__ == 202000
+#define SCP_STDC2X
+#elif __STDC_VERSION__ == 201710
+#define SCP_STDC18
+#define SCP_STDC17
+#elif __STDC_VERSION__ == 201112
+#define SCP_STDC11
+#define SCP_STDC1X
+#elif __STDC_VERSION__ == 199901
+#define SCP_STDC99
+#define SCP_STDC_PRE11
+#else
+#warning "unsupported C version"
+#endif
+
+#ifdef SCP_STDC_PRE11
 #define scpMacro_noreturn scpAttribute_noreturn
 #else
 #define scpMacro_noreturn _Noreturn
+#endif
+
+#ifdef SCP_STDC_PRE99
+#define inline /**/
+typedef long scpMacro_long;
+#else
+typedef long long scpMacro_long;
 #endif
 
 #define SCP_TO_STRING_NX(x) #x
@@ -53,7 +63,7 @@
 
 #ifndef SCP_PEDANTIC
 #define SCP_LAMBDA(return_type, body) ({ return_type _ body _; })
-#endif // SCP_PEDANTIC
+#endif /* SCP_PEDANTIC */
 
 #define SCP_SWAP(type, a, b) { type tmp = a; a = b; b = tmp; }
 
@@ -63,6 +73,6 @@ typedef void (*scpFunc_map)(void* data);
 typedef void (*scpFunc_map_index)(void* data, size_t index, size_t size);
 typedef void (*scpFunc_print)(const void* data);
 typedef uint64_t (*scpFunc_hash)(const void* data);
-typedef int (*scpFunc_cmp)(const void* a, const void* b);
+typedef scpMacro_long (*scpFunc_cmp)(const void* a, const void* b);
 
-#endif // SCP_MACROS_H
+#endif /* SCP_MACROS_H */

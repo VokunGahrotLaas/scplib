@@ -1,3 +1,7 @@
+#ifndef SCP_STDC_PRE99
+#ifndef SCP_IO_H
+#define SCP_IO_H
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
@@ -20,9 +24,9 @@ typedef union scpIOStream {
 } scpIOStream;
 
 typedef enum scpIOWay {
-	scpIOWay_IN = 1,	// 0b01
-	scpIOWay_OUT = 2,	// 0b10
-	scpIOWay_BOTH = 3	// 0b11
+	scpIOWay_IN = 1,	/* 0b01 */
+	scpIOWay_OUT = 2,	/* 0b10 */
+	scpIOWay_BOTH = 3	/* 0b11 */
 } scpIOWay;
 
 struct scpIOType;
@@ -280,3 +284,6 @@ int scpIO_flush(struct scpIO* io) {
 	}
 	return r;
 }
+
+#endif /* SCP_IO_H */
+#endif /* SCP_STDC_PRE99 */

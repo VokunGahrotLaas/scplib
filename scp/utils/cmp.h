@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-int scpCmp_string(const void* a, const void* b) {
+scpMacro_long scpCmp_string(const void* a, const void* b) {
 	return strcmp((const char*)a, (const char*)b);
 }
 
-#endif // SCP_CMP_H
+#endif /* SCP_CMP_H */
