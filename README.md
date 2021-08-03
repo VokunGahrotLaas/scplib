@@ -2,11 +2,12 @@
 C multipurpose library. \
 This library only contains headers, no `.c` to compile. \
 Compatible with stdc version c99 to c2X with `-Wall -Wextra -Wconversion -Werror`. \
+(compatibility with ansi C is on the way) \
 For `-Wpedantic` you must declare `SCP_PEPANTIC` (`-D` or `#define`) to disable some functionalities like lambdas. \
 (if someone knows how to detect pedantic with the preprocessor directly, dm me please)
 
 ## Credits
-(future)
+* [Write A Hash Table](https://github.com/jamesroutley/write-a-hash-table) by [jamesroutley](https://github.com/jamesroutley/)
 
 ## Makefile
 
@@ -20,7 +21,7 @@ To clean all compiled tests use `make mrproper`.
 ### Installation
 Run `make install` as root, it will copy the `scp/` folder in your `/usr/includes/`. \
 As said in the intro no `.c` to compile, this is a header only library. \
-You can include the lib directly as `<scp/containers/hashmap.h>`.
+You can include the lib directly as `<scp/containers/hashmap.h>` for example.
 
 ## Docs (short)
 * __utils.h__: everithing that is inside the `utils/` folder
@@ -47,35 +48,66 @@ You can include the lib directly as `<scp/containers/hashmap.h>`.
 		* `scpPrimes_gen(n)`: generates prime numbers until n
 		* `scpPrimes_next(n)`: returns the first prime number after n
 * __containers/__:
-	* __array.h__: wrapper for an array as `struct scpArray`
-    	* `.type`: pointer to virtual functions
-		* `.data`: pointer to the raw array
-		* `.count`: number of elements in the array
-		* `.size`: size of one element (as given by `sizeof`)
-	* __vector.h__: wrapper for a dynamic array as `struct scpVector`
-    	* `.type`: pointer to virtual functions
-		* `.data`: pointer to the raw array
-		* `.count`: number of elements in the array
-		* `.size`: size of one element (as given by `sizeof`)
-		* `.reserved`: number of reserved elements
+	* __array.h__: wrapper for an array as `scpArray`
+		* `struct scpArray`: array's struct
+			* `struct scpArrayType* .type`: pointer to virtual functions
+			* `void* .data`: pointer to the raw array
+			* `size_t .count`: number of elements in the array
+			* `size_t .size`: size of one element (as given by `sizeof`)
+		* `scpArray`: `struct scpArrayType` instance, virtual table of array
+			* `struct scpArray* .new(size_t count, size_t size)`: creates a new instance of `struct scpArray`, cf. `.count` and `.size` for info on parameters
+			* `void .delete(struct scpArray* array)`: deletes the array
+			* `void .resize(struct scpArray* array, size_t count)`: assigns a new count to the array
+			* `void* .at(struct scpArray* array, size_t index)`: returns a pointer to the index-th element of the array
+			* for `copy`, `fcopy`, `clone`, `fclone`, `map`, `map_index` and `print` cf. __utils.h__
+	* __vector.h__: wrapper for a dynamic array as `scpVector`
+		* `struct scpVector`: vector's struct
+			* `struct scpVectorType* .type`: pointer to virtual functions
+			* `void* .data`: pointer to the raw vector
+			* `size_t .count`: number of elements in the vector
+			* `size_t .size`: size of one element (as given by `sizeof`)
+			* `size_t .reserved`: number of element the vector can contain before needing to resize
+		* `scpVector`: `struct scpVectorType` instance, virtual table of vector
+			* `struct scpVector* .new(size_t count, size_t size)`: creates a new instance of `struct scpVector`, cf. `.count` and `.size` for info on parameters
+			* `void .delete(struct scpVector* vector)`: deletes the vector
+			* `void .resize(struct scpVector* vector, size_t count)`: assigns a new count to the vector
+			* `void .reserve(struct scpVector* vector, size_t count)`: assigns a new reserved to the vector
+			* `void* .at(struct scpVector* vector, size_t index)`: returns a pointer to the index-th element of the array
+			* `void* .append(struct scpVector* vector)`: adds an element to the vector and returns a pointer to said element
+			* `void .pop(struct scpVector* vector)`: removes the last element, throws an exception if the vector is empty
+			* for `copy`, `fcopy`, `clone`, `fclone`, `map`, `map_index` and `print` cf. __utils.h__
 	* __hashmap.h__: wrapper for a hash table, mapping key-value pair as `scpHashMap`
-    	* `.type`: pointer to virtual functions
-		* `.base_size`: desired size for items
-		* `.size`: reserved space for items (next prime to `.base_size`)
-		* `.count`: number of items
-		* `.items`: pointer to raw items
-		* `.hash_a`: first key hashing function (scpFunc_hash)
-		* `.hash_b`: second key hashing function (scpFunc_hash)
-		* `.cmp`: key comparing function (scpFunc_cmp)
+		* `struct scpHashMap`: hashmap's struct
+			* `.type`: pointer to virtual functions
+			* `.base_size`: desired size for items
+			* `.size`: reserved space for items (next prime to `.base_size`)
+			* `.count`: number of items
+			* `.items`: pointer to raw items
+			* `.hash_a`: first key hashing function (scpFunc_hash)
+			* `.hash_b`: second key hashing function (scpFunc_hash)
+			* `.cmp`: key comparing function (scpFunc_cmp)
+		* `scpHashMap`: `struct scpHashMapType` instance, virtual table of hashmap
+			* `struct scpHashMap* .new(scpFunc_hash hash_a, scpFunc_hash hash_b, scpFunc_cmp cmp)`: creates a new instance of `struct scpHashMap`, cf. `.hash_a`, `.hash_b` and `.cmp` for info on parameters
+			* `void .delete(struct scpHashMap* hashmap)`: deletes the hashmap
+			* `bool .insert(struct scpHashMap* hashmap, const void* key, void* value)`: inserts or replaces a key value pair in the hashmap, returns true if the key was already in the hashtable
+			* `bool .remove(struct scpHashMap* hashmap, const void* key)`: removes a key value pair of the hashmap, returns true if the key was in the hashtable
+			* `void* .search(struct scpHashMap* hashmap, const void* key)`: returns the value associated to the given key
 	* __hashset.h__: wrapper for a hash table, mapping single key as `scpHashSet`
-    	* `.type`: pointer to virtual functions
-		* `.base_size`: desired size for items
-		* `.size`: reserved space for items (next prime to `.base_size`)
-		* `.count`: pointer to raw items
-		* `.items`: raw pointer to item buckets
-		* `.hash_a`: first key hashing function (scpFunc_hash)
-		* `.hash_b`: second key hashing function (scpFunc_hash)
-		* `.cmp`: key comparing function (scpFunc_cmp)
+		* `struct scpHashSet`: hashset's struct
+			* `.type`: pointer to virtual functions
+			* `.base_size`: desired size for items
+			* `.size`: reserved space for items (next prime to `.base_size`)
+			* `.count`: number of items
+			* `.items`: pointer to raw items
+			* `.hash_a`: first key hashing function (scpFunc_hash)
+			* `.hash_b`: second key hashing function (scpFunc_hash)
+			* `.cmp`: key comparing function (scpFunc_cmp)
+		* `scpHashSet`: `struct scpHashSetType` instance, virtual table of hashset
+			* `struct scpHashSet* .new(scpFunc_hash hash_a, scpFunc_hash hash_b, scpFunc_cmp cmp)`: creates a new instance of `struct scpHashSet`, cf. `.hash_a`, `.hash_b` and `.cmp` for info on parameters
+			* `void .delete(struct scpHashSet* hashset)`: deletes the hashset
+			* `bool .insert(struct scpHashSet* hashset, const void* key)`: inserts or replaces a key in the hashset, returns true if the key was already in the hashtable
+			* `bool .remove(struct scpHashSet* hashset, const void* key)`: removes a key of the hashset, returns true if the key was in the hashtable
+			* `bool .search(struct scpHashSet* hashset, const void* key)`: returns true if the key was in the hashtable
 * __exceptions.h__:
 	* `scpException_<name>`: individual exception functions
 	* `SCP_EXCEPTION(exception, ...)`: calls `exeption` with `__FILE__`, `__func__` and `__LINE__` automatically
