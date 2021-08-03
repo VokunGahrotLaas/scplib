@@ -7,16 +7,16 @@
 
 #include "scp/utils/macros.h"
 
-#define _SCP_MAKE_NEW_EXCEPTION(name)																			\
-scpMacro_format_printf(4, 5)																					\
-noreturn void scpException_ ## name(const char* file, int line, const char* func, const char* format, ...) {	\
-	fprintf(stderr, "scpException "SCP_TO_STRING(name)" - \"%s\" line %i in %s: \"", file, line, func);			\
-	va_list args;																								\
-	va_start(args, format);																						\
-	vfprintf(stderr, format, args);																				\
-	va_end(args);																								\
-	fputs("\"\n", stderr);																						\
-	abort();																									\
+#define _SCP_MAKE_NEW_EXCEPTION(name)																		\
+scpAttribute_format_printf(4, 5) scpMacro_noreturn															\
+void scpException_ ## name(const char* file, int line, const char* func, const char* format, ...) {			\
+	fprintf(stderr, "scpException "SCP_TO_STRING(name)" - \"%s\" line %i in %s: \"", file, line, func);		\
+	va_list args;																							\
+	va_start(args, format);																					\
+	vfprintf(stderr, format, args);																			\
+	va_end(args);																							\
+	fputs("\"\n", stderr);																					\
+	abort();																								\
 }
 
 _SCP_MAKE_NEW_EXCEPTION(Exception)

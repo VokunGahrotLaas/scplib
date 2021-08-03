@@ -20,6 +20,7 @@ _SCP_MAKE_NEW_BINPOW(u, unsigned)
 _SCP_MAKE_NEW_BINPOW(ul, unsigned long)
 _SCP_MAKE_NEW_BINPOW(ull, unsigned long long)
 
+#ifndef SCP_STDC99
 #define scpMaths_binpow(a, b) _Generic((a),		\
 	int: scpMaths_binpow_i,						\
 	long: scpMaths_binpow_il,					\
@@ -28,5 +29,6 @@ _SCP_MAKE_NEW_BINPOW(ull, unsigned long long)
 	unsigned long: scpMaths_binpow_ul,			\
 	unsigned long long: scpMaths_binpow_ull		\
 )(a, b)
+#endif
 
 #endif // SCP_BINPOW_H

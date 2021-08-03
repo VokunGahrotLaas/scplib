@@ -18,10 +18,10 @@ struct scpVector {
 	size_t reserved;
 };
 
-scpMacro_malloc struct scpVector* scpVector_new(size_t count, size_t size);
+scpAttribute_malloc struct scpVector* scpVector_new(size_t count, size_t size);
 void scpVector_delete(struct scpVector* vector);
-scpMacro_malloc struct scpVector* scpVector_clone(struct scpVector* vector);
-scpMacro_malloc struct scpVector* scpVector_fclone(struct scpVector* vector, scpFunc_copy copy_data);
+scpAttribute_malloc struct scpVector* scpVector_clone(struct scpVector* vector);
+scpAttribute_malloc struct scpVector* scpVector_fclone(struct scpVector* vector, scpFunc_copy copy_data);
 void scpVector_copy(struct scpVector* vector, struct scpVector* new_vector);
 void scpVector_fcopy(struct scpVector* vector, struct scpVector* new_vector, scpFunc_copy copy_data);
 void scpVector_resize(struct scpVector* vector, size_t count);

@@ -7,7 +7,7 @@ else
 endif
 
 CC = gcc
-CCFLAGS = $(DEBUGFLAGS) -std=gnu2x -Wall -Wextra -Wconversion -Werror
+CCFLAGS = $(DEBUGFLAGS) -std=c2x -Wall -Wextra -Wconversion -Werror
 LDFLAGS = 
 INCLUDES = -I. -I/usr/include
 LIBS = -L/usr/lib
@@ -27,9 +27,9 @@ endef
 
 all: tests
 
-tests: $(subst test_,run_test_,$(subst .c,,$(subst $(TESTS_DIR)/,,$(TESTS))))
+run_tests: $(subst test_,run_test_,$(subst .c,,$(subst $(TESTS_DIR)/,,$(TESTS))))
 
-strict_tests: $(subst test_,run_strict_test_,$(subst .c,,$(subst $(TESTS_DIR)/,,$(TESTS))))
+run_strict_tests: $(subst test_,run_strict_test_,$(subst .c,,$(subst $(TESTS_DIR)/,,$(TESTS))))
 
 run_%: %
 	@echo "Running "$<"..."
@@ -37,19 +37,20 @@ run_%: %
 	@./tests/$<
 	@echo "================================"
 	@echo "Finished "$<
+	@rm $(TESTS_DIR)/$<
 	@echo ""
 
 test_%: $(TESTS_DIR)/test_%.c
-	@$(CC) -o tests/$@ $< $(LDFLAGS) $(LIBS) $(CCFLAGS) $(INCLUDES)
+	@$(CC) -o $(TESTS_DIR)/$@ $< $(LDFLAGS) $(LIBS) $(CCFLAGS) $(INCLUDES)
 
 strict_test_%: $(TESTS_DIR)/test_%.c
-	@$(CC) -o tests/$@ $< $(LDFLAGS) $(LIBS) $(CCFLAGS) $(INCLUDES) -Wpedantic -DSCP_PEDANTIC
+	@$(CC) -o $(TESTS_DIR)/$@ $< $(LDFLAGS) $(LIBS) $(CCFLAGS) $(INCLUDES) -Wpedantic -DSCP_PEDANTIC
 
 test_shell: $(TESTS_DIR)/test_shell.c
-	@$(CC) -o tests/$@ $< $(LDFLAGS) $(LIBS) $(CCFLAGS) $(INCLUDES) -lncurses
+	@$(CC) -o $(TESTS_DIR)/$@ $< $(LDFLAGS) $(LIBS) $(CCFLAGS) $(INCLUDES) -lncurses
 
 strict_test_shell: $(TESTS_DIR)/test_shell.c
-	@$(CC) -o tests/$@ $< $(LDFLAGS) $(LIBS) $(CCFLAGS) $(INCLUDES) -lncurses -Wpedantic -DSCP_PEDANTIC
+	@$(CC) -o $(TESTS_DIR)/$@ $< $(LDFLAGS) $(LIBS) $(CCFLAGS) $(INCLUDES) -lncurses -Wpedantic -DSCP_PEDANTIC
 
 clean:
 
@@ -59,4 +60,4 @@ mrproper: clean
 install:
 	@cp -r ./scp /usr/include/
 
-.PHONY: all tests strict_tests run_% test_% strict_test_% test_shell strict_test_shell clear mrproper install
+.PHONY: all run_tests run_strict_tests run_% test_% strict_test_% test_shell strict_test_shell clear mrproper install

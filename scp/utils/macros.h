@@ -4,24 +4,46 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include <stdnoreturn.h>
+
+#ifndef __STDC_VERSION__
+#warning "stdc before C99 are not supported"
+#elif __STDC_VERSION__ == 202000
+#define SCP_STDC2X
+#elif __STDC_VERSION__ == 201710
+#define SCP_STDC18
+#define SCP_STDC17
+#elif __STDC_VERSION__ == 201112
+#define SCP_STDC11
+#define SCP_STDC1X
+#elif __STDC_VERSION__ == 199901
+#define SCP_STDC99
+#else
+#warning "unsupported C version"
+#endif
 
 #ifndef __GNUC__
 #define  __attribute__(x) /*NOTHING*/
 #endif
 
-#define scpMacro_deprecated __attribute__((deprecated))
-#define scpMacro_used __attribute__((used))
-#define scpMacro_unused __attribute__((unused))
-#define scpMacro_noinline __attribute__((noinline))
-#define scpMacro_always_inline __attribute__((always_inline))
-#define scpMacro_constructor __attribute__((constructor))
-#define scpMacro_destructor __attribute__((destructor))
-#define scpMacro_pure __attribute__((pure))
-#define scpMacro_const __attribute__((const))
-#define scpMacro_malloc __attribute__((malloc))
-#define scpMacro_format_printf(m, n) __attribute__((format(printf, m, n)))
-#define scpMacro_format_scanf(m, n) __attribute__((format(scanf, m, n)))
+#define scpAttribute_noreturn __attribute__((noreturn))
+#define scpAttribute_deprecated __attribute__((deprecated))
+#define scpAttribute_used __attribute__((used))
+#define scpAttribute_unused __attribute__((unused))
+#define scpAttribute_noinline __attribute__((noinline))
+#define scpAttribute_always_inline __attribute__((always_inline))
+#define scpAttribute_constructor __attribute__((constructor))
+#define scpAttribute_destructor __attribute__((destructor))
+#define scpAttribute_pure __attribute__((pure))
+#define scpAttribute_const __attribute__((const))
+#define scpAttribute_malloc __attribute__((malloc))
+#define scpAttribute_format_printf(m, n) __attribute__((format(printf, m, n)))
+#define scpAttribute_format_scanf(m, n) __attribute__((format(scanf, m, n)))
+
+#ifdef SCP_STDC99
+#define scpMacro_noreturn scpAttribute_noreturn
+#else
+#define scpMacro_noreturn _Noreturn
+#endif
 
 #define SCP_TO_STRING_NX(x) #x
 #define SCP_TO_STRING(x) SCP_TO_STRING_NX(x)

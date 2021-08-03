@@ -21,6 +21,6 @@ void func_to_time(void) {
 	scpArray.map(array, square_size_t);
 }
 
-void assign_index(void* data, size_t index, scpMacro_unused size_t count) {
+void assign_index(void* data, size_t index, scpAttribute_unused size_t count) {
 	*(size_t*)data = (size_t)index;
 }

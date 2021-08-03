@@ -1,3 +1,4 @@
+#ifndef SCP_PEDANTIC
 #ifndef SCP_INT128_H
 #define SCP_INT128_H
 
@@ -52,3 +53,4 @@ int scp_print_int128(scp_int128_t i) {
 }
 
 #endif // SCP_INT128_H
+#endif // SCP_PEDANTIC

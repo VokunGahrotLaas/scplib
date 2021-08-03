@@ -168,7 +168,7 @@ char* to_lower(const char* str) {
 	return cpy;
 }
 
-void builtin_func_ping(scpMacro_unused size_t argc, scpMacro_unused char** argv) {
+void builtin_func_ping(scpAttribute_unused size_t argc, scpAttribute_unused char** argv) {
 	fputs("pong!\n", stdout);
 }
 
@@ -184,6 +184,6 @@ void builtin_func_args(size_t argc, char** argv) {
 	fputs("]\n", stdout);
 }
 
-void builtin_func_exit(scpMacro_unused size_t argc, scpMacro_unused char** argv) {
+void builtin_func_exit(scpAttribute_unused size_t argc, scpAttribute_unused char** argv) {
 	exit(EXIT_SUCCESS);
 }

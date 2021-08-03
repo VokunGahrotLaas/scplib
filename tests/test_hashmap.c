@@ -20,11 +20,11 @@ int main(void) {
 	printf("result for '%s': %i\n", keys[0], *(int*)scpHashMap.search(hashmap, keys[0]));
 	printf("\n");
 
-	printf("removed ? %s\n", scpHashMap_remove(hashmap, keys[0]) ? "true" : "false");
+	printf("removed ? %s\n", scpHashMap.remove(hashmap, keys[0]) ? "true" : "false");
 	printf("result for '%s': %p\n", keys[0], scpHashMap.search(hashmap, keys[0]));
 	printf("\n");
 
-	printf("removed ? %s\n", scpHashMap_remove(hashmap, keys[0]) ? "true" : "false");
+	printf("removed ? %s\n", scpHashMap.remove(hashmap, keys[0]) ? "true" : "false");
 	printf("result for '%s': %p\n", keys[0], scpHashMap.search(hashmap, keys[0]));
 	printf("\n");
 
