@@ -28,7 +28,7 @@ You can include the lib directly as `<scp/containers/hashmap.h>` for example.
 * __utils/__:
 	* __macros.h__: utility macros
 		* `__attribute__((<attribute>))` as `scpAttribute_<attribute>`
-		* `scpMacro_noreturn` is definied as `_Noreturn` normally or `scpAttribute_noreturn` in c99.
+		* `scpNoreturn` is definied as `_Noreturn` normally or `scpAttribute_noreturn` with c99 and under
 		* `#X` as `SCP_TO_STRING_NX(X)` and `SCP_TO_STRING(X)`
 		* `a##b` as `SCP_CONCAT_NX(a, b)` and `SCP_CONCAT(a, b)`
 		* lambda functions with `SCP_LAMBDA(return_type, body)` (not pedantic, disable with `-DSCP_PEDANTIC`)
