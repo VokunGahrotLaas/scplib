@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-scpMacro_long scpCmp_string(const void* a, const void* b) {
+long scpCmp_string(const void* a, const void* b) {
 	return strcmp((const char*)a, (const char*)b);
 }
 

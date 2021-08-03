@@ -10,7 +10,7 @@
 #ifndef SCP_STDC_PRE99
 
 #define _SCP_MAKE_NEW_EXCEPTION(name)																		\
-scpAttribute_format_printf(4, 5) scpMacro_noreturn															\
+scpAttribute_format_printf(4, 5) scpNoreturn																\
 void scpException_##name(const char* file, int line, const char* func, const char* format, ...) {			\
 	fprintf(stderr, "scpException "SCP_TO_STRING(name)" - \"%s\" line %i in %s: \"", file, line, func);		\
 	va_list args;																							\
@@ -26,7 +26,7 @@ void scpException_##name(const char* file, int line, const char* func, const cha
 #else /* SCP_STDC_PRE99 */
 
 #define _SCP_MAKE_NEW_EXCEPTION(name)																		\
-scpAttribute_format_printf(3, 4) scpMacro_noreturn															\
+scpAttribute_format_printf(3, 4) scpNoreturn																\
 void scpException_##name(const char* file, int line, const char* format, ...) {								\
 	fprintf(stderr, "scpException "SCP_TO_STRING(name)" - \"%s\" line %i: \"", file, line);					\
 	va_list args;																							\

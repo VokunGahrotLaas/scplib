@@ -21,10 +21,10 @@
 #define scpAttribute_const __attribute__((const))
 #define scpAttribute_malloc __attribute__((malloc))
 #define scpAttribute_format_printf(m, n) __attribute__((format(printf, m, n)))
-#define scpAttribute_format_scanf(m, n) __attribute__((format(scanf, m, n)))
-
+#define scpAttribib_format_scanf(m, n) __attribute__((format(scanf, m, n)))
 
 #ifndef __STDC_VERSION__
+#warning "unsupported C version, stdc is under c99"
 #define SCP_STDC_PRE11
 #define SCP_STDC_PRE99
 #elif __STDC_VERSION__ == 202000
@@ -45,14 +45,11 @@
 #ifdef SCP_STDC_PRE11
 #define scpMacro_noreturn scpAttribute_noreturn
 #else
-#define scpMacro_noreturn _Noreturn
+#define scpNoreturn _Noreturn
 #endif
 
 #ifdef SCP_STDC_PRE99
 #define inline /**/
-typedef long scpMacro_long;
-#else
-typedef long long scpMacro_long;
 #endif
 
 #define SCP_TO_STRING_NX(x) #x
@@ -73,6 +70,6 @@ typedef void (*scpFunc_map)(void* data);
 typedef void (*scpFunc_map_index)(void* data, size_t index, size_t size);
 typedef void (*scpFunc_print)(const void* data);
 typedef uint64_t (*scpFunc_hash)(const void* data);
-typedef scpMacro_long (*scpFunc_cmp)(const void* a, const void* b);
+typedef long (*scpFunc_cmp)(const void* a, const void* b);
 
 #endif /* SCP_MACROS_H */
