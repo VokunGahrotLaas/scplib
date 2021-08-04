@@ -1,8 +1,7 @@
 # scplib
 C multipurpose library. \
 This library only contains headers, no `.c` to compile. \
-Compatible with stdc version c99 to c2X with `-Wall -Wextra -Wconversion -Werror`. \
-(compatibility with ansi C is on the way) \
+Compatible with stdc versions from c99 to c2X with flags like `-Wall -Wextra -Wconversion -Werror`. \
 For `-Wpedantic` you must declare `SCP_PEPANTIC` (`-D` or `#define`) to disable some functionalities like lambdas. \
 (if someone knows how to detect pedantic with the preprocessor directly, dm me please)
 

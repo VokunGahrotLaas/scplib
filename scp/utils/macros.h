@@ -25,7 +25,7 @@
 
 #ifdef __STDC__
 #ifndef __STDC_VERSION__
-#warning "ANSI C is not supported"
+#error "ANSI C is not supported"
 #define SCP_STDC_PRE11
 #define SCP_STDC_PRE99
 #define SCP_STDC_90
@@ -42,14 +42,14 @@
 #define SCP_STDC_PRE11
 #define SCP_STDC99
 #elif __STDC_VERSION__ >= 199409L
-#warning "c95 is not suported"
+#error "c95 is not suported"
 #define SCP_STDC_PRE11
 #define SCP_STDC_PRE99
 #define SCP_STDC95
 #define SCP_STDC94
 #endif
 #else
-#warning "K&R C is not supported"
+#error "K&R C is not supported"
 #define SCP_STDC_PRE11
 #define SCP_STDC_PRE99
 #define SCP_STDC72
@@ -59,10 +59,6 @@
 #define scpNoreturn scpAttribute_noreturn
 #else
 #define scpNoreturn _Noreturn
-#endif
-
-#ifdef SCP_STDC_PRE99
-#define inline /**/
 #endif
 
 #define SCP_TO_STRING_NX(x) #x
