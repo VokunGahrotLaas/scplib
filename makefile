@@ -6,8 +6,15 @@ else
 	DEBUGFLAGS = -O2
 endif
 
+STDC90 = c90 -ansi
+STDC95 = iso9899:199409
+STDC99 = c99
+STDC11 = c11
+STDC17 = c17
+STDC23 = c2x
+
 CC = gcc
-CCFLAGS = $(DEBUGFLAGS) -std=c2x -Wall -Wextra -Wconversion -Werror
+CCFLAGS = $(DEBUGFLAGS) -std=$(STDC99)  -Wall -Wextra -Wconversion -Werror
 LDFLAGS = 
 INCLUDES = -I. -I/usr/include
 LIBS = -L/usr/lib

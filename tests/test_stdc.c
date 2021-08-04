@@ -17,7 +17,7 @@ int main(void) {
 #ifdef __STDC_VERSION__
 	printf("__STCD_VERSION__: %li\n", __STDC_VERSION__);
 #else
-	printf("__STCD_VERSION__: (%p)\n", NULL);
+	printf("__STCD_VERSION__: (nil)\n");
 #endif
 	return EXIT_SUCCESS;
 }

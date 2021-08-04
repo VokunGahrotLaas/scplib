@@ -23,27 +23,40 @@
 #define scpAttribute_format_printf(m, n) __attribute__((format(printf, m, n)))
 #define scpAttribib_format_scanf(m, n) __attribute__((format(scanf, m, n)))
 
+#ifdef __STDC__
 #ifndef __STDC_VERSION__
-#warning "unsupported C version, stdc is under c99"
+#warning "ANSI C is not supported"
 #define SCP_STDC_PRE11
 #define SCP_STDC_PRE99
-#elif __STDC_VERSION__ == 202000
+#define SCP_STDC_90
+#define SCP_STDC_89
+#elif __STDC_VERSION__ >= 202000L
 #define SCP_STDC2X
-#elif __STDC_VERSION__ == 201710
+#elif __STDC_VERSION__ >= 201710L
 #define SCP_STDC18
 #define SCP_STDC17
-#elif __STDC_VERSION__ == 201112
+#elif __STDC_VERSION__ >= 201112L
 #define SCP_STDC11
 #define SCP_STDC1X
-#elif __STDC_VERSION__ == 199901
-#define SCP_STDC99
+#elif __STDC_VERSION__ >= 199901L
 #define SCP_STDC_PRE11
+#define SCP_STDC99
+#elif __STDC_VERSION__ >= 199409L
+#warning "c95 is not suported"
+#define SCP_STDC_PRE11
+#define SCP_STDC_PRE99
+#define SCP_STDC95
+#define SCP_STDC94
+#endif
 #else
-#warning "unsupported C version"
+#warning "K&R C is not supported"
+#define SCP_STDC_PRE11
+#define SCP_STDC_PRE99
+#define SCP_STDC72
 #endif
 
 #ifdef SCP_STDC_PRE11
-#define scpMacro_noreturn scpAttribute_noreturn
+#define scpNoreturn scpAttribute_noreturn
 #else
 #define scpNoreturn _Noreturn
 #endif
