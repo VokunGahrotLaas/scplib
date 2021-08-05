@@ -58,4 +58,4 @@ _SCP_MAKE_NEW_BINPOW(uint64_t, uint64)
 )(a, b)
 #endif
 
-#endif /* SCP_BINPOW_H */
+#endif // SCP_BINPOW_H

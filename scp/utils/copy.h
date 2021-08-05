@@ -51,4 +51,4 @@ _SCP_MAKE_NEW_COPY_INTEGER(uint64_t, uint64)
 )(a, b)
 #endif
 
-#endif /* SCP_COPY_H */
+#endif // SCP_COPY_H

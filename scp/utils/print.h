@@ -58,4 +58,4 @@ void scpPrint_wchar(const void* data) { fputwc(*(const wchar_t*)data, stdout); }
 void scpPrint_string(const void* data) { fputs((const char*)data, stdout); }
 void scpPrint_wstring(const void* data) { fputws((const wchar_t*)data, stdout); }
 
-#endif /* SCP_PRINT_H */
+#endif // SCP_PRINT_H

@@ -171,4 +171,4 @@ bool scpHashSet_search(struct scpHashSet* hashmap, const void* key) {
 	return false;
 }
 
-#endif /* SCP_HASHSET_H */
+#endif // SCP_HASHSET_H

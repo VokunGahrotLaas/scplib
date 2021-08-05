@@ -173,4 +173,4 @@ void* scpHashMap_search(struct scpHashMap* hashmap, const void* key) {
 	return NULL;
 }
 
-#endif /* SCP_HASHMAP_H */
+#endif // SCP_HASHMAP_H

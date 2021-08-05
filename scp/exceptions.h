@@ -29,4 +29,4 @@ _SCP_MAKE_NEW_EXCEPTION(InvalidArgument)
 
 #define SCP_EXCEPTION(name, ...) name(__FILE__, __LINE__, __func__, __VA_ARGS__)
 
-#endif /* SCP_EXCEPTIONS_H */
+#endif // SCP_EXCEPTIONS_H

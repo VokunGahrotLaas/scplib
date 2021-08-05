@@ -8,4 +8,4 @@
 #include "scp/utils/copy.h"
 #include "scp/utils/clone.h"
 
-#endif /* SCP_UTILS_H */
+#endif // SCP_UTILS_H

@@ -40,4 +40,4 @@ uint64_t scpHash_wstringB(const void* data) {
 	return scpHash_base_wstring((const wchar_t*)data, 65539);
 }
 
-#endif /* SCP_HASH_H */
+#endif // SCP_HASH_H

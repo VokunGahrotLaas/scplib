@@ -48,4 +48,4 @@ uint64_t scpPrimes_next(uint64_t n) {
 	}
 }
 
-#endif /* SCP_PRIMES_H */
+#endif // SCP_PRIMES_H

@@ -52,5 +52,5 @@ int scp_print_int128(scp_int128_t i) {
 	return scp_fprint_int128(stdout, i);
 }
 
-#endif /* SCP_INT128_H */
-#endif /* SCP_PEDANTIC */
+#endif // SCP_INT128_H
+#endif // SCP_PEDANTIC

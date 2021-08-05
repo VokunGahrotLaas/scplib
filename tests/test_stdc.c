@@ -2,8 +2,7 @@
 #include <stdio.h>
 
 #include "scp/utils.h"
-#include "scp/maths/binpow.h"
-#include "scp/maths/primes.h"
+#include "scp/maths.h"
 #include "scp/containers/array.h"
 #include "scp/containers/vector.h"
 #include "scp/containers/hashmap.h"

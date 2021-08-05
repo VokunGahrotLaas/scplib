@@ -6,7 +6,6 @@
 #include "utils.h"
 
 static void print_size_tDList(const char* name, scpDList* list);
-static void square(void* data);
 
 int main(void) {
 	size_t size = 10;
@@ -34,7 +33,7 @@ int main(void) {
 	scpDList_push_back(list, data2);
 	printf("pushed %zu back\n", *data2);
 
-	scpDList_map(list, square);
+	scpDList_map(list, square_size_t);
 	printf("squared the list\n");
 	printf("\n");
 
@@ -63,8 +62,4 @@ static void print_size_tDList(const char* name, scpDList* list) {
 	printf(" | ");
 	scpDList_rprint(list, scpPrint_size);
 	printf("\n");
-}
-
-static void square(void* data) {
-	*(size_t*)data *= *(size_t*)data;
 }

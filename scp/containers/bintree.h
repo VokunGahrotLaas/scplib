@@ -29,4 +29,4 @@ void scpBinTree_destroy(scpBinTree* binTree) {
 	free(binTree);
 }
 
-#endif /* SCP_BINTREE_H */
+#endif // SCP_BINTREE_H

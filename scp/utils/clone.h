@@ -53,4 +53,4 @@ _SCP_MAKE_NEW_CLONE_INTEGER(uint64_t, uint64)
 )(a, b)
 #endif
 
-#endif /* SCP_CLONE_H */
+#endif // SCP_CLONE_H

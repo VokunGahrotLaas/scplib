@@ -21,7 +21,7 @@
 #define scpAttribute_const __attribute__((const))
 #define scpAttribute_malloc __attribute__((malloc))
 #define scpAttribute_format_printf(m, n) __attribute__((format(printf, m, n)))
-#define scpAttribib_format_scanf(m, n) __attribute__((format(scanf, m, n)))
+#define scpAttribute_format_scanf(m, n) __attribute__((format(scanf, m, n)))
 
 #ifdef __STDC__
 #ifndef __STDC_VERSION__
@@ -69,7 +69,7 @@
 
 #ifndef SCP_PEDANTIC
 #define SCP_LAMBDA(return_type, body) ({ return_type _ body _; })
-#endif /* SCP_PEDANTIC */
+#endif // SCP_PEDANTIC
 
 #define SCP_SWAP(type, a, b) { type tmp = a; a = b; b = tmp; }
 
@@ -81,4 +81,4 @@ typedef void (*scpFunc_print)(const void* data);
 typedef uint64_t (*scpFunc_hash)(const void* data);
 typedef int64_t (*scpFunc_cmp)(const void* a, const void* b);
 
-#endif /* SCP_MACROS_H */
+#endif // SCP_MACROS_H

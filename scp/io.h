@@ -1,4 +1,3 @@
-#ifndef SCP_STDC_PRE99
 #ifndef SCP_IO_H
 #define SCP_IO_H
 
@@ -24,15 +23,15 @@ typedef union scpIOStream {
 } scpIOStream;
 
 typedef enum scpIOWay {
-	scpIOWay_IN = 1,	/* 0b01 */
-	scpIOWay_OUT = 2,	/* 0b10 */
-	scpIOWay_BOTH = 3	/* 0b11 */
+	scpIOWay_IN = 1,	// 0b01
+	scpIOWay_OUT = 2,	// 0b10
+	scpIOWay_BOTH = 3	// 0b11
 } scpIOWay;
 
 struct scpIOType;
 
 struct scpIO {
-	struct scpIOType* type;
+	const struct scpIOType* type;
 	scpIOStreamType stream_type;
 	scpIOStream stream;
 	scpIOWay way;
@@ -57,14 +56,16 @@ struct scpIOSType {
 	.delete = scpIOS_delete
 };
 
-struct scpIO* scpIO_new(scpIOStreamType stream_type, void* stream, scpIOWay way);
+struct scpIO* scpIO_new(scpIOStreamType stream_type, void* stream, scpIOWay way) scpAttribute_malloc;
 void scpIO_delete(struct scpIO* io);
 int scpIO_putc(struct scpIO* io, int c);
 int scpIO_getc(struct scpIO* io);
 int scpIO_puts(struct scpIO* io, char* string);
 char* scpIO_gets(struct scpIO* io, char* buffer, size_t buffer_size);
+scpAttribute_format_printf(2, 3)
 int scpIO_printf(struct scpIO* io, char* format, ...);
 int scpIO_vprintf(struct scpIO* io, char* format, va_list args);
+scpAttribute_format_scanf(2, 3)
 int scpIO_scanf(struct scpIO* io, char* format, ...);
 int scpIO_vscanf(struct scpIO* io, char* format, va_list args);
 int scpIO_flush(struct scpIO* io);
@@ -76,12 +77,14 @@ struct scpIOType {
 	int (*getc)(struct scpIO* io);
 	int (*puts)(struct scpIO* io, char* string);
 	char* (*gets)(struct scpIO* io, char* buffer, size_t buffer_size);
+	scpAttribute_format_printf(2, 3)
 	int (*printf)(struct scpIO* io, char* format, ...);
 	int (*vprintf)(struct scpIO* io, char* format, va_list args);
+	scpAttribute_format_scanf(2, 3)
 	int (*scanf)(struct scpIO* io, char* format, ...);
 	int (*vscanf)(struct scpIO* io, char* format, va_list args);
 	int (*flush)(struct scpIO* io);
-} scpIO = {
+} const scpIO = {
 	.new = scpIO_new,
 	.delete = scpIO_delete,
 	.putc = scpIO_putc,
@@ -285,5 +288,4 @@ int scpIO_flush(struct scpIO* io) {
 	return r;
 }
 
-#endif /* SCP_IO_H */
-#endif /* SCP_STDC_PRE99 */
+#endif // SCP_IO_H

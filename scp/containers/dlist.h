@@ -244,4 +244,4 @@ void scpDList_rprint(scpDList* list, scpFunc_print print_element) {
 	fputc(']', stdout);
 }
 
-#endif /* SCP_DLIST_H */
+#endif // SCP_DLIST_H

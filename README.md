@@ -38,6 +38,7 @@ You can include the lib directly as `<scp/containers/hashmap.h>` for example.
 	* __clone.h__: functions of type `scpFunc_clone`
 	* __hash.h__: functions of type `scpFunc_hash`
 	* __cmp.h__: functions of type `scpFunc_cmp`
+* __maths.h__: everithing that is inside the `maths/` folder
 * __maths/__:
 	* __binpow.h__: integers binary exponanciation
 		* `scpMaths_binpow_(i|il|ill|u|ul|ull)` for individual function

@@ -184,4 +184,4 @@ void scpVector_print(struct scpVector* vector, scpFunc_print print_element) {
 	fputc(']', stdout);
 }
 
-#endif /* SCP_VECTOR_H */
+#endif // SCP_VECTOR_H

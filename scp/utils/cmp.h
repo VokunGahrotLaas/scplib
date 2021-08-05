@@ -46,4 +46,4 @@ int64_t scpCmp_wstring(const void* a, const void* b) {
 	return wcscmp((const wchar_t*)a, (const wchar_t*)b);
 }
 
-#endif /* SCP_CMP_H */
+#endif // SCP_CMP_H

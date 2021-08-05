@@ -4,15 +4,17 @@
 
 #include "scp/io.h"
 
+#define BUFFER_SIZE 1023
+
 int main(void) {
 	struct scpIOS* ios = scpIOS.new(scpIOStreamType_FILE, stdin, scpIOStreamType_FILE, stdout);
 	struct scpIO* io = scpIO.new(scpIOStreamType_scpIOS, ios, scpIOWay_BOTH);
-	char buffer[1024];
+	char buffer[BUFFER_SIZE + 1];
 
 	scpIO.puts(io, "Write something: ");
 	scpIO.flush(io);
-	scpIO.scanf(io, "%1023s", buffer);
-	scpIO.printf(io, "You have written: '%s' (%i)\n", buffer, strlen(buffer));
+	scpIO.scanf(io, "%"SCP_TO_STRING(BUFFER_SIZE)"s", buffer);
+	scpIO.printf(io, "You have written: '%s' (%zu)\n", buffer, strlen(buffer));
 
 	scpIO.delete(io);
 	scpIOS.delete(ios);

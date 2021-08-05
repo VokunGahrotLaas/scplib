@@ -1,4 +1,4 @@
-CC = gcc
+CC = clang
 CCFLAGS = $(DEBUGFLAGS) -std=gnu2x -O2 -g -Wall -Wextra -Wconversion -Werror
 LDFLAGS = 
 INCLUDES = -I. -I/usr/include
@@ -64,4 +64,4 @@ mrproper: clean
 install:
 	@cp -r ./scp /usr/include/
 
-.PHONY: all run_tests run_strict_tests run_% test_% strict_test_% clear mrproper install
+.PHONY: all run_tests run_strict_tests run_% debug_% validate_% test_% strict_test_% clear mrproper install
