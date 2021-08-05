@@ -8,10 +8,6 @@ struct scpArray* scpPrimes_array = NULL;
 const uint64_t* scpPrimes_gen(uint64_t n);
 uint64_t scpPrimes_next(uint64_t n);
 
-scpAttribute_constructor static void scpPrimes_constructor(void) {
-	scpPrimes_gen(1000);
-}
-
 const uint64_t* scpPrimes_gen(uint64_t n) {
 	if (!scpPrimes_array) {
 		scpPrimes_array = scpArray_new(1, sizeof(uint64_t));

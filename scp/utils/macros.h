@@ -79,6 +79,6 @@ typedef void (*scpFunc_map)(void* data);
 typedef void (*scpFunc_map_index)(void* data, size_t index, size_t size);
 typedef void (*scpFunc_print)(const void* data);
 typedef uint64_t (*scpFunc_hash)(const void* data);
-typedef long (*scpFunc_cmp)(const void* a, const void* b);
+typedef int64_t (*scpFunc_cmp)(const void* a, const void* b);
 
 #endif /* SCP_MACROS_H */

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#include <wchar.h>
 
 #include "scp/maths/binpow.h"
 
@@ -11,13 +12,7 @@ uint64_t scpHash_base_string(const char* s, const uint64_t a) {
 	uint64_t hash = 0;
 	const size_t len_s = strlen(s);
 	for (size_t i = 0; i < len_s; ++i)
-#ifdef SCP_STDC_PRE99
-		hash += (uint64_t)scpMaths_binpow_ul(a, len_s - i - 1) * (uint64_t)s[i];
-#elif defined(SCP_STDC_PRE11)
-		hash += (uint64_t)scpMaths_binpow_ull(a, len_s - i - 1) * (uint64_t)s[i];
-#else
-		hash += scpMaths_binpow(a, len_s - i - 1) * (uint64_t)s[i];
-#endif
+		hash += scpMaths_binpow_uint64(a, len_s - i - 1) * (uint64_t)s[i];
 	return hash;
 }
 
@@ -27,6 +22,22 @@ uint64_t scpHash_stringA(const void* data) {
 
 uint64_t scpHash_stringB(const void* data) {
 	return scpHash_base_string((const char*)data, 263);
+}
+
+uint64_t scpHash_base_wstring(const wchar_t* s, const uint64_t a) {
+	uint64_t hash = 0;
+	const size_t len_s = wcslen(s);
+	for (size_t i = 0; i < len_s; ++i)
+		hash += scpMaths_binpow_uint64(a, len_s - i - 1) * (uint64_t)s[i];
+	return hash;
+}
+
+uint64_t scpHash_wstringA(const void* data) {
+	return scpHash_base_wstring((const wchar_t*)data, 65537);
+}
+
+uint64_t scpHash_wstringB(const void* data) {
+	return scpHash_base_wstring((const wchar_t*)data, 65539);
 }
 
 #endif /* SCP_HASH_H */

@@ -9,37 +9,37 @@ int main(void) {
 	scpVector.resize(vector, 10);
 	for (size_t i = 0; i < vector->count; ++i)
 		((size_t*)vector->data)[i] = i;
-	scpVector.print(vector, scpPrint_size_t);
+	scpVector.print(vector, scpPrint_size);
 	printf(" %zu / %zu \n", vector->count, vector->reserved);
 
 	scpVector.map(vector, square_size_t);
-	scpVector.print(vector, scpPrint_size_t);
+	scpVector.print(vector, scpPrint_size);
 	printf(" %zu / %zu \n", vector->count, vector->reserved);
 
 	scpVector.resize(vector, 17);
-	scpVector.print(vector, scpPrint_size_t);
+	scpVector.print(vector, scpPrint_size);
 	printf(" %zu / %zu \n", vector->count, vector->reserved);
 
 	scpVector.resize(vector, 55);
-	scpVector.print(vector, scpPrint_size_t);
+	scpVector.print(vector, scpPrint_size);
 	printf(" %zu / %zu \n", vector->count, vector->reserved);
 
 	scpVector.resize(vector, 25);
-	scpVector.print(vector, scpPrint_size_t);
+	scpVector.print(vector, scpPrint_size);
 	printf(" %zu / %zu \n", vector->count, vector->reserved);
 
 	scpVector.resize(vector, 3);
-	scpVector.print(vector, scpPrint_size_t);
+	scpVector.print(vector, scpPrint_size);
 	printf(" %zu / %zu \n", vector->count, vector->reserved);
 
 	for (size_t i = 0; i < 15; ++i)
 		*(size_t*)scpVector.append(vector) = i;
-	scpVector.print(vector, scpPrint_size_t);
+	scpVector.print(vector, scpPrint_size);
 	printf(" %zu / %zu \n", vector->count, vector->reserved);
 
 	for (size_t i = 0; i < 15; ++i)
 		scpVector.pop(vector);
-	scpVector.print(vector, scpPrint_size_t);
+	scpVector.print(vector, scpPrint_size);
 	printf(" %zu / %zu \n", vector->count, vector->reserved);
 
 	scpVector.delete(vector);

@@ -20,7 +20,7 @@ int main(void) {
 		scpDList_push_front(list, data + i);
 
 	scpDList* copy = scpDList_copy(list);
-	scpDList* fcopy = scpDList_fcopy(list, scpClone_size_t);
+	scpDList* fcopy = scpDList_fcopy(list, scpClone_size);
 
 	print_size_tDList("l", list);
 	print_size_tDList("c", copy);
@@ -59,9 +59,9 @@ int main(void) {
 
 static void print_size_tDList(const char* name, scpDList* list) {
 	printf("%s: ", name);
-	scpDList_print(list, scpPrint_size_t);
+	scpDList_print(list, scpPrint_size);
 	printf(" | ");
-	scpDList_rprint(list, scpPrint_size_t);
+	scpDList_rprint(list, scpPrint_size);
 	printf("\n");
 }
 

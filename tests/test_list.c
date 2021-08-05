@@ -20,7 +20,7 @@ int main(void) {
 		scpList_push_front(list, data + i);
 
 	scpList* copy = scpList_copy(list);
-	scpList* fcopy = scpList_fcopy(list, scpClone_size_t);
+	scpList* fcopy = scpList_fcopy(list, scpClone_size);
 
 	print_size_tList("l", list);
 	print_size_tList("c", copy);
@@ -61,7 +61,7 @@ int main(void) {
 
 static void print_size_tList(const char* name, scpList* list) {
 	printf("%s: ", name);
-	scpList_print(list, scpPrint_size_t);
+	scpList_print(list, scpPrint_size);
 	printf("\n");
 }
 
