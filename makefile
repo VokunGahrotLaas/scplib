@@ -26,7 +26,7 @@ run_strict_tests: $(subst test_,run_strict_test_,$(subst .c,,$(subst $(TESTS_DIR
 run_%: %
 	@echo "Running "$<"..."
 	@echo "================================"
-	@./tests/$<
+	@-./tests/$<
 	@echo "================================"
 	@echo "Finished "$<
 	@rm $(TESTS_DIR)/$<
@@ -35,7 +35,16 @@ run_%: %
 debug_%: %
 	@echo "Debugging "$<"..."
 	@echo "================================"
-	@gdb tests/$<
+	@-gdb tests/$<
+	@echo "================================"
+	@echo "Finished "$<
+	@rm $(TESTS_DIR)/$<
+	@echo ""
+
+validate_%: %
+	@echo "Validating "$<"..."
+	@echo "================================"
+	@-validate_cshell tests/$<
 	@echo "================================"
 	@echo "Finished "$<
 	@rm $(TESTS_DIR)/$<
