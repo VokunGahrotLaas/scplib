@@ -1,4 +1,4 @@
-CC = clang
+CC = gcc
 CCFLAGS = $(DEBUGFLAGS) -std=gnu2x -O2 -g -Wall -Wextra -Wconversion -Werror
 LDFLAGS = 
 INCLUDES = -I. -I/usr/include
@@ -41,15 +41,6 @@ debug_%: %
 	@rm $(TESTS_DIR)/$<
 	@echo ""
 
-validate_%: %
-	@echo "Validating "$<"..."
-	@echo "================================"
-	@-validate_cshell tests/$<
-	@echo "================================"
-	@echo "Finished "$<
-	@rm $(TESTS_DIR)/$<
-	@echo ""
-
 test_%: $(TESTS_DIR)/test_%.c
 	@$(CC) -o $(TESTS_DIR)/$@ $< $(LDFLAGS) $(LIBS) $(CCFLAGS) $(INCLUDES)
 
@@ -64,4 +55,4 @@ mrproper: clean
 install:
 	@cp -r ./scp /usr/include/
 
-.PHONY: all run_tests run_strict_tests run_% debug_% validate_% test_% strict_test_% clear mrproper install
+.PHONY: all run_tests run_strict_tests run_% debug_% test_% strict_test_% clear mrproper install
