@@ -1,5 +1,5 @@
 CC = gcc
-CCFLAGS = $(DEBUGFLAGS) -std=gnu2x -O2 -g -Wall -Wextra -Wconversion -Werror
+CCFLAGS = -std=gnu2x -O2 -g -Wall -Wextra -Wconversion -Werror
 LDFLAGS = 
 INCLUDES = -I. -I/usr/include
 LIBS = -L/usr/lib
