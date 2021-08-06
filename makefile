@@ -1,5 +1,5 @@
 CC = gcc
-CCFLAGS = -std=c17 -O2 -g -Wall -Wextra -Wconversion -Werror
+CCFLAGS = -std=c99 -O2 -g -Wall -Wextra -Wconversion -Werror
 LDFLAGS = 
 INCLUDES = -I. -I/usr/include
 LIBS = -L/usr/lib

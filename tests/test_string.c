@@ -6,12 +6,12 @@
 #define NB_RUN 100000000
 #define MAX_SIZE 100
 
-void strdup(void);
+void strdup_scp(void);
 void strdup_cpy(void);
 void strdup_rea(void);
 void strdup_arr(void);
 void strdup_vec(void);
-void strndup(void);
+void strndup_scp(void);
 char* rand_str(size_t length);
 char* scpString_strdup_cpy(const char* str, size_t len);
 char* scpString_strdup_rea(const char* str);
@@ -19,21 +19,21 @@ char* scpString_strdup_arr(const char* str);
 char* scpString_strdup_vec(const char* str);
 
 int main(void) {
-	printf("strdup_cpy : %4lu ms\n", scpTime_ExecTimeMs(strdup_cpy));
+	printf("strdup_cpy  : %4lu ms\n", scpTime_ExecTimeMs(strdup_cpy));
 	fflush(stdout);
-	printf("strdup     : %4lu ms\n", scpTime_ExecTimeMs(strdup));
+	printf("strdup_scp  : %4lu ms\n", scpTime_ExecTimeMs(strdup_scp));
 	fflush(stdout);
-	printf("strndup    : %4lu ms\n", scpTime_ExecTimeMs(strndup));
+	printf("strndup_scp : %4lu ms\n", scpTime_ExecTimeMs(strndup_scp));
 	fflush(stdout);
-	printf("strdup_vec : %4lu ms\n", scpTime_ExecTimeMs(strdup_vec));
+	printf("strdup_vec  : %4lu ms\n", scpTime_ExecTimeMs(strdup_vec));
 	fflush(stdout);
-	printf("strdup_rea : %4lu ms\n", scpTime_ExecTimeMs(strdup_rea));
+	printf("strdup_rea  : %4lu ms\n", scpTime_ExecTimeMs(strdup_rea));
 	fflush(stdout);
-	printf("strdup_arr : %4lu ms\n", scpTime_ExecTimeMs(strdup_arr));
+	printf("strdup_arr  : %4lu ms\n", scpTime_ExecTimeMs(strdup_arr));
 	return EXIT_SUCCESS;
 }
 
-void strdup(void) {
+void strdup_scp(void) {
 	srand((unsigned)time(NULL));
 	FILE* devnull = fopen("/dev/null", "a");
 	for (size_t i = 0; i < NB_RUN; ++i) {
@@ -99,7 +99,7 @@ void strdup_vec(void) {
 	fclose(devnull);
 }
 
-void strndup(void) {
+void strndup_scp(void) {
 	FILE* devnull = fopen("/dev/null", "a");
 	for (size_t i = 0; i < NB_RUN; ++i) {
 		char* str = rand_str((size_t)rand() % MAX_SIZE);
