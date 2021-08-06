@@ -185,7 +185,7 @@ void scpVector_map(struct scpVector* vector, scpFunc_map f) {
 void scpVector_print(struct scpVector* vector, scpFunc_print print) {
 	fputc('[', stdout);
 	for (size_t i = 0; i < vector->count; ++i) {
-		print_element((void*)((char*)vector->data + i * vector->size));
+		print((void*)((char*)vector->data + i * vector->size));
 		if (i != vector->count - 1)
 			fputs(", ", stdout);
 	}
@@ -195,7 +195,7 @@ void scpVector_print(struct scpVector* vector, scpFunc_print print) {
 void scpVector_fprint(struct scpVector* vector, FILE* stream, scpFunc_fprint fprint) {
 	fputc('[', stream);
 	for (size_t i = 0; i < vector->count; ++i) {
-		print_element(stream, (void*)((char*)vector->data + i * vector->size));
+		fprint(stream, (void*)((char*)vector->data + i * vector->size));
 		if (i != vector->count - 1)
 			fputs(", ", stream);
 	}
