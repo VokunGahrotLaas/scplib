@@ -11,17 +11,20 @@
 struct scpVectorType;
 
 struct scpVector {
-	struct scpVectorType* type;
+	const struct scpVectorType* type;
 	void* data;
 	size_t count;
 	size_t size;
 	size_t reserved;
 };
 
-scpAttribute_malloc struct scpVector* scpVector_new(size_t count, size_t size);
+scpAttribute_malloc
+struct scpVector* scpVector_new(size_t count, size_t size);
 void scpVector_delete(struct scpVector* vector);
-scpAttribute_malloc struct scpVector* scpVector_clone(struct scpVector* vector);
-scpAttribute_malloc struct scpVector* scpVector_fclone(struct scpVector* vector, scpFunc_copy copy_data);
+scpAttribute_malloc
+struct scpVector* scpVector_clone(struct scpVector* vector);
+scpAttribute_malloc
+struct scpVector* scpVector_fclone(struct scpVector* vector, scpFunc_copy copy_data);
 void scpVector_copy(struct scpVector* vector, struct scpVector* new_vector);
 void scpVector_fcopy(struct scpVector* vector, struct scpVector* new_vector, scpFunc_copy copy_data);
 void scpVector_resize(struct scpVector* vector, size_t count);
@@ -33,7 +36,7 @@ void scpVector_map_index(struct scpVector* vector, scpFunc_map_index f);
 void scpVector_map(struct scpVector* vector, scpFunc_map f);
 void scpVector_print(struct scpVector* vector, scpFunc_print print_element);
 
-struct scpVectorType {
+static struct scpVectorType {
 	struct scpVector* (*new)(size_t count, size_t size);
 	void (*delete)(struct scpVector* vector);
 	struct scpVector* (*clone)(struct scpVector* vector);
@@ -48,7 +51,7 @@ struct scpVectorType {
 	void (*map_index)(struct scpVector* vector, scpFunc_map_index f);
 	void (*map)(struct scpVector* vector, scpFunc_map f);
 	void (*print)(struct scpVector* vector, scpFunc_print print_element);
-} scpVector = {
+} const scpVector = {
 	.new = scpVector_new,
 	.delete = scpVector_delete,
 	.clone = scpVector_clone,
@@ -64,6 +67,8 @@ struct scpVectorType {
 	.map = scpVector_map,
 	.print = scpVector_print,
 };
+
+#ifdef SCP_IMPLEMENTATION
 
 struct scpVector* scpVector_new(size_t count, size_t size) {
 	struct scpVector* vector = (struct scpVector*)malloc(sizeof(struct scpVector));
@@ -183,5 +188,7 @@ void scpVector_print(struct scpVector* vector, scpFunc_print print_element) {
 	}
 	fputc(']', stdout);
 }
+
+#endif // SCP_IMPLEMENTATION
 
 #endif // SCP_VECTOR_H

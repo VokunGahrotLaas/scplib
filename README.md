@@ -2,7 +2,7 @@
 C multipurpose library. \
 This library only contains headers, no `.c` to compile. \
 Compatible with stdc versions from c99 to c2X with flags like `-Wall -Wextra -Wconversion -Werror`. \
-For `-Wpedantic` you must declare `SCP_PEPANTIC` (`-D` or `#define`) to disable some functionalities like lambdas. \
+For `-Wpedantic` you must define `SCP_PEPANTIC` (`-D` or `#define`) to disable some functionalities like lambdas. \
 (if someone knows how to detect pedantic with the preprocessor directly, dm me please)
 
 ## Credits
@@ -20,7 +20,13 @@ To clean all compiled tests use `make mrproper`.
 ### Installation
 Run `make install` as root, it will copy the `scp/` folder in your `/usr/includes/`. \
 As said in the intro no `.c` to compile, this is a header only library. \
-You can include the lib directly as `<scp/containers/hashmap.h>` for example.
+For this reason you must define SCP_IMPLEMENTATION in __one and only one__ of the translation units (usualy the main.c file). \
+You can thus include the lib directly as follows:
+```c
+#define SCP_IMPLEMENTATION
+#include <scp/containers/hashmap.h>
+```
+Or add -DSCP_IMPLEMENTATION to the compiler arguments.
 
 ## Docs (short)
 * __utils.h__: everithing that is inside the `utils/` folder

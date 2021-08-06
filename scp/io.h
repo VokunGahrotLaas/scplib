@@ -40,7 +40,7 @@ struct scpIO {
 struct scpIOSType;
 
 struct scpIOS {
-	struct scpIOSType* type;
+	const struct scpIOSType* type;
 	struct scpIO* in;
 	struct scpIO* out;
 };
@@ -48,10 +48,10 @@ struct scpIOS {
 struct scpIOS* scpIOS_new(scpIOStreamType stream_type_in, void* stream_in, scpIOStreamType stream_type_out, void* stream_out);
 void scpIOS_delete(struct scpIOS* ios);
 
-struct scpIOSType {
+static struct scpIOSType {
 	struct scpIOS* (*new)(scpIOStreamType stream_type_in, void* stream_in, scpIOStreamType stream_type_out, void* stream_out);
 	void (*delete)(struct scpIOS* ios);
-} scpIOS = {
+} const scpIOS = {
 	.new = scpIOS_new,
 	.delete = scpIOS_delete
 };
@@ -70,7 +70,7 @@ int scpIO_scanf(struct scpIO* io, char* format, ...);
 int scpIO_vscanf(struct scpIO* io, char* format, va_list args);
 int scpIO_flush(struct scpIO* io);
 
-struct scpIOType {
+static struct scpIOType {
 	struct scpIO* (*new)(scpIOStreamType stream_type, void* stream, scpIOWay way);
 	void (*delete)(struct scpIO* io);
 	int (*putc)(struct scpIO* io, int c);
@@ -97,6 +97,8 @@ struct scpIOType {
 	.vscanf = scpIO_vscanf,
 	.flush = scpIO_flush
 };
+
+#ifdef SCP_IMPLEMENTATION
 
 struct scpIOS* scpIOS_new(scpIOStreamType stream_type_in, void* stream_in, scpIOStreamType stream_type_out, void* stream_out) {
 	struct scpIOS* ios = (struct scpIOS*)malloc(sizeof(struct scpIOS));
@@ -287,5 +289,7 @@ int scpIO_flush(struct scpIO* io) {
 	}
 	return r;
 }
+
+#endif // SCP_IMPLEMENTATION
 
 #endif // SCP_IO_H

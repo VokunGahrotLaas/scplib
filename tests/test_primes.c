@@ -11,7 +11,7 @@
 int main(void) {
 	for (uint64_t i = 0; i < 16; ++i) {
 		printf("next prime to %"PRId64": %"PRId64"\n", i, scpPrimes_next(i));
-		scpArray.print(scpPrimes_array, scpPrint_uint64);
+		scpVector.print(scpPrimes_vector, scpPrint_uint64);
 		printf("\n");
 	}
 

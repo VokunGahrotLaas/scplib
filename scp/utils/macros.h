@@ -6,6 +6,7 @@
 #include <stdbool.h>
 
 #ifndef __GNUC__
+#warning "this library was made for gcc"
 #define  __attribute__(x) /**/
 #endif
 

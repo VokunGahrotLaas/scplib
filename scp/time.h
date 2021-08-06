@@ -11,6 +11,8 @@ inline clock_t scpTime_ExecTimeNs(void (*func)(void));
 inline clock_t scpTime_ExecTimeMs(void (*func)(void));
 inline clock_t scpTime_ExecTimeS(void (*func)(void));
 
+#ifdef SCP_IMPLEMENTATION
+
 inline clock_t scpTime_clocksToNs(clock_t t) {
 	return (clock_t)((size_t)t * 1000000 / CLOCKS_PER_SEC);
 }
@@ -40,5 +42,7 @@ inline clock_t scpTime_ExecTimeMs(void (*func)(void)) {
 inline clock_t scpTime_ExecTimeS(void (*func)(void)) {
 	return scpTime_clocksToS(scpTime_ExecTime(func));
 }
+
+#endif // SCP_IMPLEMENTATION
 
 #endif // SCP_TIME_H

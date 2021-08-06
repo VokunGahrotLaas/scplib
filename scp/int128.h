@@ -24,6 +24,8 @@ int scp_print_uint128(scp_uint128_t u);
 int scp_fprint_int128(FILE* stream, scp_int128_t i);
 int scp_print_int128(scp_int128_t i);
 
+#ifdef SCP_IMPLEMENTATION
+
 int scp_fprint_uint128(FILE* stream, scp_uint128_t u) {
 	int r;
 	if (u > UINT64_MAX) {
@@ -51,6 +53,8 @@ int scp_fprint_int128(FILE* stream, scp_int128_t i) {
 int scp_print_int128(scp_int128_t i) {
 	return scp_fprint_int128(stdout, i);
 }
+
+#endif // SCP_IMPLEMENTATION
 
 #endif // SCP_INT128_H
 #endif // SCP_PEDANTIC

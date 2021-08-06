@@ -6,7 +6,17 @@
 #include <string.h>
 #include <wchar.h>
 
-#include "scp/maths/binpow.h"
+#include "scp/maths/binpow.h" 
+
+uint64_t scpHash_base_string(const char* s, const uint64_t a);
+uint64_t scpHash_stringA(const void* data);
+uint64_t scpHash_stringB(const void* data);
+
+uint64_t scpHash_base_wstring(const wchar_t* s, const uint64_t a);
+uint64_t scpHash_wstringA(const void* data);
+uint64_t scpHash_wstringB(const void* data);
+
+#ifdef SCP_IMPLEMENTATION
 
 uint64_t scpHash_base_string(const char* s, const uint64_t a) {
 	uint64_t hash = 0;
@@ -39,5 +49,7 @@ uint64_t scpHash_wstringA(const void* data) {
 uint64_t scpHash_wstringB(const void* data) {
 	return scpHash_base_wstring((const wchar_t*)data, 65539);
 }
+
+#endif // SCP_IMPLEMENTATION
 
 #endif // SCP_HASH_H

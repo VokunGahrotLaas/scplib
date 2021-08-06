@@ -13,15 +13,10 @@ typedef struct scpHashMapItem {
 	void* value;
 } scpHashMapItem;
 
-static scpHashMapItem scpHashMap_DELETED_ITEM = { .key = NULL, .value = NULL };
-
-scpAttribute_malloc static scpHashMapItem* scpHashMapItem_new(const void* key, void* value);
-static void scpHashMapItem_delete(scpHashMapItem* item);
-
 struct scpHashMapType;
 
 struct scpHashMap {
-	struct scpHashMapType* type;
+	const struct scpHashMapType* type;
 	size_t base_size;
 	size_t size;
 	size_t count;
@@ -31,31 +26,40 @@ struct scpHashMap {
 	scpFunc_cmp cmp;
 };
 
-static size_t scpHashMap_get_hash(struct scpHashMap* hashmap, const void* data, const size_t attempt);
-scpAttribute_malloc static struct scpHashMap* scpHashMap_new_sized(const size_t base_size, scpFunc_hash hash_a, scpFunc_hash hash_b, scpFunc_cmp cmp);
-static void scpHashMap_resize(struct scpHashMap* hashmap, const size_t base_size);
-static void scpHashMap_resize_up(struct scpHashMap* hashmap);
-static void scpHashMap_resize_down(struct scpHashMap* hashmap);
-
 scpAttribute_malloc struct scpHashMap* scpHashMap_new(scpFunc_hash hash_a, scpFunc_hash hash_b, scpFunc_cmp cmp);
 void scpHashMap_delete(struct scpHashMap* hashmap);
 bool scpHashMap_insert(struct scpHashMap* hashmap, const void* key, void* value);
 bool scpHashMap_remove(struct scpHashMap* hashmap, const void* key);
 void* scpHashMap_search(struct scpHashMap* hashmap, const void* key);
 
-struct scpHashMapType {
+static struct scpHashMapType {
 	struct scpHashMap* (*new)(scpFunc_hash hash_a, scpFunc_hash hash_b, scpFunc_cmp cmp);
 	void (*delete)(struct scpHashMap* hashmap);
 	bool (*insert)(struct scpHashMap* hashmap, const void* key, void* value);
 	bool (*remove)(struct scpHashMap* hashmap, const void* key);
 	void* (*search)(struct scpHashMap* hashmap, const void* key);
-} scpHashMap = {
+} const scpHashMap = {
 	.new = scpHashMap_new,
 	.delete = scpHashMap_delete,
 	.insert = scpHashMap_insert,
 	.remove = scpHashMap_remove,
 	.search = scpHashMap_search
 };
+
+#ifdef SCP_IMPLEMENTATION
+
+static scpHashMapItem scpHashMap_DELETED_ITEM = { .key = NULL, .value = NULL };
+
+scpAttribute_malloc
+static scpHashMapItem* scpHashMapItem_new(const void* key, void* value);
+static void scpHashMapItem_delete(scpHashMapItem* item);
+
+static size_t scpHashMap_get_hash(struct scpHashMap* hashmap, const void* data, const size_t attempt);
+scpAttribute_malloc
+static struct scpHashMap* scpHashMap_new_sized(const size_t base_size, scpFunc_hash hash_a, scpFunc_hash hash_b, scpFunc_cmp cmp);
+static void scpHashMap_resize(struct scpHashMap* hashmap, const size_t base_size);
+static void scpHashMap_resize_up(struct scpHashMap* hashmap);
+static void scpHashMap_resize_down(struct scpHashMap* hashmap);
 
 static scpHashMapItem* scpHashMapItem_new(const void* key, void* value) {
 	scpHashMapItem* item = (scpHashMapItem*)malloc(sizeof(scpHashMapItem));
@@ -172,5 +176,7 @@ void* scpHashMap_search(struct scpHashMap* hashmap, const void* key) {
 	}
 	return NULL;
 }
+
+#endif // SCP_IMPLEMENTATION
 
 #endif // SCP_HASHMAP_H

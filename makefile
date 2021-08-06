@@ -3,7 +3,9 @@ CCFLAGS = -std=gnu2x -O2 -g -Wall -Wextra -Wconversion -Werror
 LDFLAGS = 
 INCLUDES = -I. -I/usr/include
 LIBS = -L/usr/lib
-TESTS_DIR = tests
+DEFINES = -DSCP_IMPLEMENTATION
+
+TESTS_DIR = ./tests
 TESTS = $(wildcard $(TESTS_DIR)/*.c)
 TESTS_EXEC = $(subst .c,,$(TESTS))
 STRICT_TESTS_EXEC = $(addprefix $(TESTS_DIR)/strict_,$(notdir $(TESTS_EXEC)))
@@ -26,7 +28,7 @@ run_strict_tests: $(subst test_,run_strict_test_,$(subst .c,,$(subst $(TESTS_DIR
 run_%: %
 	@echo "Running "$<"..."
 	@echo "================================"
-	@-./tests/$<
+	@-$(TESTS_DIR)/$<
 	@echo "================================"
 	@echo "Finished "$<
 	@rm $(TESTS_DIR)/$<
@@ -35,17 +37,17 @@ run_%: %
 debug_%: %
 	@echo "Debugging "$<"..."
 	@echo "================================"
-	@-gdb tests/$<
+	@-gdb $(TESTS_DIR)/$<
 	@echo "================================"
 	@echo "Finished "$<
 	@rm $(TESTS_DIR)/$<
 	@echo ""
 
 test_%: $(TESTS_DIR)/test_%.c
-	@$(CC) -o $(TESTS_DIR)/$@ $< $(LDFLAGS) $(LIBS) $(CCFLAGS) $(INCLUDES)
+	@$(CC) -o $(TESTS_DIR)/$@ $< $(LDFLAGS) $(LIBS) $(CCFLAGS) $(INCLUDES) $(DEFINES)
 
 strict_test_%: $(TESTS_DIR)/test_%.c
-	@$(CC) -o $(TESTS_DIR)/$@ $< $(LDFLAGS) $(LIBS) $(CCFLAGS) $(INCLUDES) -Wpedantic -DSCP_PEDANTIC
+	@$(CC) -o $(TESTS_DIR)/$@ $< $(LDFLAGS) $(LIBS) $(CCFLAGS) $(INCLUDES) $(DEFINES) -Wpedantic -DSCP_PEDANTIC
 
 clean:
 

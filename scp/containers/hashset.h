@@ -12,15 +12,10 @@ typedef struct scpHashSetItem {
 	const void* key;
 } scpHashSetItem;
 
-static scpHashSetItem scpHashSet_DELETED_ITEM = { .key = NULL };
-
-scpAttribute_malloc static scpHashSetItem* scpHashSetItem_new(const void* key);
-static void scpHashSetItem_delete(scpHashSetItem* item);
-
 struct scpHashSetType;
 
 struct scpHashSet {
-	struct scpHashSetType* type;
+	const struct scpHashSetType* type;
 	size_t base_size;
 	size_t size;
 	size_t count;
@@ -30,31 +25,38 @@ struct scpHashSet {
 	scpFunc_cmp cmp;
 };
 
-static size_t scpHashSet_get_hash(struct scpHashSet* hashmap, const void* data, const size_t attempt);
-scpAttribute_malloc static struct scpHashSet* scpHashSet_new_sized(const size_t base_size, scpFunc_hash hash_a, scpFunc_hash hash_b, scpFunc_cmp cmp);
-static void scpHashSet_resize(struct scpHashSet* hashmap, const size_t base_size);
-static void scpHashSet_resize_up(struct scpHashSet* hashmap);
-static void scpHashSet_resize_down(struct scpHashSet* hashmap);
-
 scpAttribute_malloc struct scpHashSet* scpHashSet_new(scpFunc_hash hash_a, scpFunc_hash hash_b, scpFunc_cmp cmp);
 void scpHashSet_delete(struct scpHashSet* hashmap);
 bool scpHashSet_insert(struct scpHashSet* hashmap, const void* key);
 bool scpHashSet_remove(struct scpHashSet* hashmap, const void* key);
 bool scpHashSet_search(struct scpHashSet* hashmap, const void* key);
 
-struct scpHashSetType {
+static struct scpHashSetType {
 	struct scpHashSet* (*new)(scpFunc_hash hash_a, scpFunc_hash hash_b, scpFunc_cmp cmp);
 	void (*delete)(struct scpHashSet* hashmap);
 	bool (*insert)(struct scpHashSet* hashmap, const void* key);
 	bool (*remove)(struct scpHashSet* hashmap, const void* key);
 	bool (*search)(struct scpHashSet* hashmap, const void* key);
-} scpHashSet = {
+} const scpHashSet = {
 	.new = scpHashSet_new,
 	.delete = scpHashSet_delete,
 	.insert = scpHashSet_insert,
 	.remove = scpHashSet_remove,
 	.search = scpHashSet_search
 };
+
+#ifdef SCP_IMPLEMENTATION
+
+static scpHashSetItem scpHashSet_DELETED_ITEM = { .key = NULL };
+
+scpAttribute_malloc static scpHashSetItem* scpHashSetItem_new(const void* key);
+static void scpHashSetItem_delete(scpHashSetItem* item);
+
+static size_t scpHashSet_get_hash(struct scpHashSet* hashmap, const void* data, const size_t attempt);
+scpAttribute_malloc static struct scpHashSet* scpHashSet_new_sized(const size_t base_size, scpFunc_hash hash_a, scpFunc_hash hash_b, scpFunc_cmp cmp);
+static void scpHashSet_resize(struct scpHashSet* hashmap, const size_t base_size);
+static void scpHashSet_resize_up(struct scpHashSet* hashmap);
+static void scpHashSet_resize_down(struct scpHashSet* hashmap);
 
 static scpHashSetItem* scpHashSetItem_new(const void* key) {
 	scpHashSetItem* item = (scpHashSetItem*)malloc(sizeof(scpHashSetItem));
@@ -170,5 +172,7 @@ bool scpHashSet_search(struct scpHashSet* hashmap, const void* key) {
 	}
 	return false;
 }
+
+#endif // SCP_IMPLEMENTATION
 
 #endif // SCP_HASHSET_H

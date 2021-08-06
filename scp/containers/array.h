@@ -11,7 +11,7 @@
 struct scpArrayType;
 
 struct scpArray {
-	struct scpArrayType* type;
+	const struct scpArrayType* type;
 	void* data;
 	size_t count;
 	size_t size;
@@ -29,7 +29,7 @@ void scpArray_map_index(struct scpArray* array, scpFunc_map_index f);
 void scpArray_map(struct scpArray* array, scpFunc_map f);
 void scpArray_print(struct scpArray* array, scpFunc_print print_element);
 
-struct scpArrayType {
+static struct scpArrayType {
 	struct scpArray* (*new)(size_t count, size_t size);
 	void (*delete)(struct scpArray* array);
 	struct scpArray* (*clone)(struct scpArray* array);
@@ -41,7 +41,7 @@ struct scpArrayType {
 	void (*map_index)(struct scpArray* array, scpFunc_map_index f);
 	void (*map)(struct scpArray* array, scpFunc_map f);
 	void (*print)(struct scpArray* array, scpFunc_print print_element);
-} scpArray = {
+} const scpArray = {
 	.new = scpArray_new,
 	.delete = scpArray_delete,
 	.clone = scpArray_clone,
@@ -54,6 +54,8 @@ struct scpArrayType {
 	.map = scpArray_map,
 	.print = scpArray_print,
 };
+
+#ifdef SCP_IMPLEMENTATION
 
 struct scpArray* scpArray_new(size_t count, size_t size) {
 	struct scpArray* array = (struct scpArray*)malloc(sizeof(struct scpArray));
@@ -137,5 +139,7 @@ void scpArray_print(struct scpArray* array, scpFunc_print print_element) {
 	}
 	fputc(']', stdout);
 }
+
+#endif // SCP_IMPLEMENTATION
 
 #endif // SCP_ARRAY_H
