@@ -16,9 +16,12 @@ int main(void) {
 }
 
 void func_to_time(void) {
-	struct scpArray* array = scpArray.new(100000000, sizeof(size_t));
+	struct scpArray* array = scpArray.new(1000000, sizeof(size_t));
 	scpArray.map_index(array, assign_index);
 	scpArray.map(array, square_size_t);
+	FILE* devnull = fopen("/dev/null", "a");
+	scpArray.fprint(array, devnull, scpFPrint_size);
+	fclose(devnull);
 }
 
 void assign_index(void* data, size_t index, scpAttribute_unused size_t count) {

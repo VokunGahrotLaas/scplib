@@ -34,18 +34,27 @@ Or add -DSCP_IMPLEMENTATION to the compiler arguments.
 	* __macros.h__: utility macros
 		* `__attribute__((<attribute>))` as `scpAttribute_<attribute>`
 		* `scpNoreturn` is definied as `_Noreturn` normally or `scpAttribute_noreturn` with c99 and under
+		* `scpBool`, `scpTrue` and `scpFalse`, macros for `_Bool`, `1` and `0`
 		* `#X` as `SCP_TO_STRING_NX(X)` and `SCP_TO_STRING(X)`
 		* `a##b` as `SCP_CONCAT_NX(a, b)` and `SCP_CONCAT(a, b)`
 		* lambda functions with `SCP_LAMBDA(return_type, body)` (not pedantic, disable with `-DSCP_PEDANTIC`)
 		* swaping contents of variables with `SCP_SWAP(type, a, b)`
 		* function typedefs as `scpFunc_<function>`
+	* __string.h__: utility functions for strings
+		* `char* scpString_to_lower(char* str)`: change str to lowercase, returns str
+		* `char* scpString_to_upper(char* str)`: change str to uppercase, returns str
+		* `char* scpString_new_lower(const char* str)`: change str to lowercase, returns a new string (must be free'd)
+		* `char* scpString_new_upper(const char* str)`: change str to uppercase, returns a new string (must be free'd)
+	* __io.h__: utility functions for input/output
+		* `scpBool scpIO_flush_buffer(FILE* stream, char* buffer)`: utility for fgets, will check if the used inputed a line bigger than the cappacity of the buffer and if not it will replace the newline character '\n' with a null character '\0', otherwise it will empty the buffer until a newline is uncountered, returns `scpTrue` if it emptied the buffer, `scpFalse` otherwise.
 	* __print.h__: functions of type `scpFunc_print`
+	* __fprint.h__: functions of type `scpFunc_fprint`
 	* __copy.h__: functions of type `scpFunc_copy`
 	* __clone.h__: functions of type `scpFunc_clone`
 	* __hash.h__: functions of type `scpFunc_hash`
 	* __cmp.h__: functions of type `scpFunc_cmp`
 * __maths.h__: everithing that is inside the `maths/` folder
-* __maths/__:
+* __maths/__: general maths utility functions
 	* __binpow.h__: integers binary exponanciation
 		* `scpMaths_binpow_(i|il|ill|u|ul|ull)` for individual function
 		* `scpMaths_binpow` `_Generic` with type deduced from the first argument
@@ -53,8 +62,8 @@ Or add -DSCP_IMPLEMENTATION to the compiler arguments.
 		* `scpPrimes_array`: scpArray in which the prime numbers are stored
 		* `scpPrimes_gen(n)`: generates prime numbers until n
 		* `scpPrimes_next(n)`: returns the first prime number after n
-* __containers/__:
-	* __array.h__: wrapper for an array as `scpArray`
+* __containers/__: OOP wrappers for data structures
+	* __array.h__: OOP wrapper for an array as `scpArray`
 		* `struct scpArray`: array's struct
 			* `struct scpArrayType* .type`: pointer to virtual functions
 			* `void* .data`: pointer to the raw array
@@ -65,8 +74,8 @@ Or add -DSCP_IMPLEMENTATION to the compiler arguments.
 			* `void .delete(struct scpArray* array)`: deletes the array
 			* `void .resize(struct scpArray* array, size_t count)`: assigns a new count to the array
 			* `void* .at(struct scpArray* array, size_t index)`: returns a pointer to the index-th element of the array
-			* for `copy`, `fcopy`, `clone`, `fclone`, `map`, `map_index` and `print` cf. __utils.h__
-	* __vector.h__: wrapper for a dynamic array as `scpVector`
+			* for `copy`, `fcopy`, `clone`, `fclone`, `map`, `map_index`, `print` and `fprint` cf. __utils.h__
+	* __vector.h__: OOP wrapper for a dynamic array as `scpVector`
 		* `struct scpVector`: vector's struct
 			* `struct scpVectorType* .type`: pointer to virtual functions
 			* `void* .data`: pointer to the raw vector
@@ -81,8 +90,8 @@ Or add -DSCP_IMPLEMENTATION to the compiler arguments.
 			* `void* .at(struct scpVector* vector, size_t index)`: returns a pointer to the index-th element of the array
 			* `void* .append(struct scpVector* vector)`: adds an element to the vector and returns a pointer to said element
 			* `void .pop(struct scpVector* vector)`: removes the last element, throws an exception if the vector is empty
-			* for `copy`, `fcopy`, `clone`, `fclone`, `map`, `map_index` and `print` cf. __utils.h__
-	* __hashmap.h__: wrapper for a hash table, mapping key-value pair as `scpHashMap`
+			* for `copy`, `fcopy`, `clone`, `fclone`, `map`, `map_index`, `print` and `fprint` cf. __utils.h__
+	* __hashmap.h__: OOP wrapper for a hash table, mapping key-value pair as `scpHashMap`
 		* `struct scpHashMap`: hashmap's struct
 			* `.type`: pointer to virtual functions
 			* `.base_size`: desired size for items
@@ -98,7 +107,7 @@ Or add -DSCP_IMPLEMENTATION to the compiler arguments.
 			* `bool .insert(struct scpHashMap* hashmap, const void* key, void* value)`: inserts or replaces a key value pair in the hashmap, returns true if the key was already in the hashtable
 			* `bool .remove(struct scpHashMap* hashmap, const void* key)`: removes a key value pair of the hashmap, returns true if the key was in the hashtable
 			* `void* .search(struct scpHashMap* hashmap, const void* key)`: returns the value associated to the given key
-	* __hashset.h__: wrapper for a hash table, mapping single key as `scpHashSet`
+	* __hashset.h__: OOP wrapper for a hash table, mapping single key as `scpHashSet`
 		* `struct scpHashSet`: hashset's struct
 			* `.type`: pointer to virtual functions
 			* `.base_size`: desired size for items
@@ -119,5 +128,5 @@ Or add -DSCP_IMPLEMENTATION to the compiler arguments.
 	* `SCP_EXCEPTION(exception, ...)`: calls `exeption` with `__FILE__`, `__func__` and `__LINE__` automatically
 * __int128.h__: wrapper for GNU C `__int128` (not pedantic)
 	* typedefs and printing functions for signed and unsigned int128
-* __io.h__: generic stream for files, strings, etc... (in dev)
+* __stream.h__: generic OOP stream for files, strings, etc...
 * __time.h__: function timing utility

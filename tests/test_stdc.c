@@ -9,7 +9,7 @@
 #include "scp/containers/hashset.h"
 #include "scp/exceptions.h"
 #include "scp/time.h"
-#include "scp/io.h"
+#include "scp/stream.h"
 #include "scp/int128.h"
 
 int main(void) {

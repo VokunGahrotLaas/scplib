@@ -28,15 +28,15 @@ struct scpHashMap {
 
 scpAttribute_malloc struct scpHashMap* scpHashMap_new(scpFunc_hash hash_a, scpFunc_hash hash_b, scpFunc_cmp cmp);
 void scpHashMap_delete(struct scpHashMap* hashmap);
-bool scpHashMap_insert(struct scpHashMap* hashmap, const void* key, void* value);
-bool scpHashMap_remove(struct scpHashMap* hashmap, const void* key);
+scpBool scpHashMap_insert(struct scpHashMap* hashmap, const void* key, void* value);
+scpBool scpHashMap_remove(struct scpHashMap* hashmap, const void* key);
 void* scpHashMap_search(struct scpHashMap* hashmap, const void* key);
 
 static struct scpHashMapType {
 	struct scpHashMap* (*new)(scpFunc_hash hash_a, scpFunc_hash hash_b, scpFunc_cmp cmp);
 	void (*delete)(struct scpHashMap* hashmap);
-	bool (*insert)(struct scpHashMap* hashmap, const void* key, void* value);
-	bool (*remove)(struct scpHashMap* hashmap, const void* key);
+	scpBool (*insert)(struct scpHashMap* hashmap, const void* key, void* value);
+	scpBool (*remove)(struct scpHashMap* hashmap, const void* key);
 	void* (*search)(struct scpHashMap* hashmap, const void* key);
 } const scpHashMap = {
 	.new = scpHashMap_new,
@@ -127,7 +127,7 @@ void scpHashMap_delete(struct scpHashMap* hashmap) {
 	free(hashmap);
 }
 
-bool scpHashMap_insert(struct scpHashMap* hashmap, const void* key, void* value) {
+scpBool scpHashMap_insert(struct scpHashMap* hashmap, const void* key, void* value) {
 	if (hashmap->count * 100 / hashmap->size > 70)
 		scpHashMap_resize_up(hashmap);
 	scpHashMapItem* item = scpHashMapItem_new(key, value);
@@ -137,17 +137,17 @@ bool scpHashMap_insert(struct scpHashMap* hashmap, const void* key, void* value)
 		if (cur_item != &scpHashMap_DELETED_ITEM && hashmap->cmp(cur_item->key, key) == 0) {
 			scpHashMapItem_delete(cur_item);
 			hashmap->items[index] = item;
-			return true;
+			return scpTrue;
 		}
 		index = scpHashMap_get_hash(hashmap, item->key, i);
 		cur_item = hashmap->items[index];
 	}
 	hashmap->items[index] = item;
 	++hashmap->count;
-	return false;
+	return scpFalse;
 }
 
-bool scpHashMap_remove(struct scpHashMap* hashmap, const void* key) {
+scpBool scpHashMap_remove(struct scpHashMap* hashmap, const void* key) {
 	if (hashmap->count * 100 / hashmap->size < 10)
 		scpHashMap_resize_down(hashmap);
 	size_t index = scpHashMap_get_hash(hashmap, key, 0);
@@ -157,12 +157,12 @@ bool scpHashMap_remove(struct scpHashMap* hashmap, const void* key) {
 			scpHashMapItem_delete(item);
 			hashmap->items[index] = &scpHashMap_DELETED_ITEM;
 			--hashmap->count;
-			return true;
+			return scpTrue;
 		}
 		index = scpHashMap_get_hash(hashmap, key, i);
 		item = hashmap->items[index];
 	}
-	return false;
+	return scpFalse;
 }
 
 void* scpHashMap_search(struct scpHashMap* hashmap, const void* key) {

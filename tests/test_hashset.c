@@ -3,8 +3,7 @@
 #include <string.h>
 
 #include "scp/containers/hashset.h"
-#include "scp/utils/hash.h"
-#include "scp/utils/cmp.h"
+#include "scp/utils.h"
 
 int main(void) {
 	struct scpHashSet* hashmap = scpHashSet.new(scpHash_stringA, scpHash_stringB, scpCmp_string);

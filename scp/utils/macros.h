@@ -3,7 +3,10 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include <stdbool.h>
+
+#define scpBool _Bool
+#define scpTrue 1
+#define scpFalse 0
 
 #ifndef __GNUC__
 #warning "this library was made for gcc"
@@ -79,6 +82,7 @@ typedef void* (*scpFunc_clone)(const void* data);
 typedef void (*scpFunc_map)(void* data);
 typedef void (*scpFunc_map_index)(void* data, size_t index, size_t size);
 typedef void (*scpFunc_print)(const void* data);
+typedef void (*scpFunc_fprint)(FILE* stream, const void* data);
 typedef uint64_t (*scpFunc_hash)(const void* data);
 typedef int64_t (*scpFunc_cmp)(const void* a, const void* b);
 

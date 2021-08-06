@@ -34,7 +34,8 @@ void* scpVector_append(struct scpVector* vector);
 void scpVector_pop(struct scpVector* vector);
 void scpVector_map_index(struct scpVector* vector, scpFunc_map_index f);
 void scpVector_map(struct scpVector* vector, scpFunc_map f);
-void scpVector_print(struct scpVector* vector, scpFunc_print print_element);
+void scpVector_print(struct scpVector* vector, scpFunc_print print);
+void scpVector_fprint(struct scpVector* vector, FILE* stream, scpFunc_fprint fprint);
 
 static struct scpVectorType {
 	struct scpVector* (*new)(size_t count, size_t size);
@@ -50,7 +51,8 @@ static struct scpVectorType {
 	void (*pop)(struct scpVector* vector);
 	void (*map_index)(struct scpVector* vector, scpFunc_map_index f);
 	void (*map)(struct scpVector* vector, scpFunc_map f);
-	void (*print)(struct scpVector* vector, scpFunc_print print_element);
+	void (*print)(struct scpVector* vector, scpFunc_print print);
+	void (*fprint)(struct scpVector* vector, FILE* stream, scpFunc_fprint fprint);
 } const scpVector = {
 	.new = scpVector_new,
 	.delete = scpVector_delete,
@@ -66,6 +68,7 @@ static struct scpVectorType {
 	.map_index = scpVector_map_index,
 	.map = scpVector_map,
 	.print = scpVector_print,
+	.fprint = scpVector_fprint
 };
 
 #ifdef SCP_IMPLEMENTATION
@@ -179,7 +182,7 @@ void scpVector_map(struct scpVector* vector, scpFunc_map f) {
 		f((void*)((char*)vector->data + i * vector->size));
 }
 
-void scpVector_print(struct scpVector* vector, scpFunc_print print_element) {
+void scpVector_print(struct scpVector* vector, scpFunc_print print) {
 	fputc('[', stdout);
 	for (size_t i = 0; i < vector->count; ++i) {
 		print_element((void*)((char*)vector->data + i * vector->size));
@@ -187,6 +190,16 @@ void scpVector_print(struct scpVector* vector, scpFunc_print print_element) {
 			fputs(", ", stdout);
 	}
 	fputc(']', stdout);
+}
+
+void scpVector_fprint(struct scpVector* vector, FILE* stream, scpFunc_fprint fprint) {
+	fputc('[', stream);
+	for (size_t i = 0; i < vector->count; ++i) {
+		print_element(stream, (void*)((char*)vector->data + i * vector->size));
+		if (i != vector->count - 1)
+			fputs(", ", stream);
+	}
+	fputc(']', stream);
 }
 
 #endif // SCP_IMPLEMENTATION

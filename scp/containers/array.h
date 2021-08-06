@@ -27,7 +27,8 @@ void scpArray_resize(struct scpArray* array, size_t count);
 void* scpArray_at(struct scpArray* array, size_t index);
 void scpArray_map_index(struct scpArray* array, scpFunc_map_index f);
 void scpArray_map(struct scpArray* array, scpFunc_map f);
-void scpArray_print(struct scpArray* array, scpFunc_print print_element);
+void scpArray_print(struct scpArray* array, scpFunc_print print);
+void scpArray_fprint(struct scpArray* array, FILE* stream, scpFunc_fprint fprint);
 
 static struct scpArrayType {
 	struct scpArray* (*new)(size_t count, size_t size);
@@ -40,7 +41,8 @@ static struct scpArrayType {
 	void* (*at)(struct scpArray* array, size_t index);
 	void (*map_index)(struct scpArray* array, scpFunc_map_index f);
 	void (*map)(struct scpArray* array, scpFunc_map f);
-	void (*print)(struct scpArray* array, scpFunc_print print_element);
+	void (*print)(struct scpArray* array, scpFunc_print print);
+	void (*fprint)(struct scpArray* array, FILE* stream, scpFunc_fprint fprint);
 } const scpArray = {
 	.new = scpArray_new,
 	.delete = scpArray_delete,
@@ -53,6 +55,7 @@ static struct scpArrayType {
 	.map_index = scpArray_map_index,
 	.map = scpArray_map,
 	.print = scpArray_print,
+	.fprint = scpArray_fprint
 };
 
 #ifdef SCP_IMPLEMENTATION
@@ -130,14 +133,24 @@ void scpArray_map(struct scpArray* array, scpFunc_map f) {
 		f((void*)((char*)array->data + i * array->size));
 }
 
-void scpArray_print(struct scpArray* array, scpFunc_print print_element) {
+void scpArray_print(struct scpArray* array, scpFunc_print print) {
 	fputc('[', stdout);
 	for (size_t i = 0; i < array->count; ++i) {
-		print_element((void*)((char*)array->data + i * array->size));
+		print((void*)((char*)array->data + i * array->size));
 		if (i != array->count - 1)
 			fputs(", ", stdout);
 	}
 	fputc(']', stdout);
+}
+
+void scpArray_fprint(struct scpArray* array, FILE* stream, scpFunc_fprint fprint) {
+	fputc('[', stream);
+	for (size_t i = 0; i < array->count; ++i) {
+		fprint(stream, (void*)((char*)array->data + i * array->size));
+		if (i != array->count - 1)
+			fputs(", ", stream);
+	}
+	fputc(']', stream);
 }
 
 #endif // SCP_IMPLEMENTATION

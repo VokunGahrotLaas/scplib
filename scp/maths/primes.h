@@ -1,7 +1,7 @@
 #ifndef SCP_PRIMES_H
 #define SCP_PRIMES_H
 
-#include <stdint.h>
+#include "scp/utils/macros.h"
 
 const uint64_t* scpPrimes_gen(uint64_t n);
 uint64_t scpPrimes_next(uint64_t n);
@@ -33,7 +33,7 @@ uint64_t scpPrimes_next(uint64_t n) {
 	for (size_t i = 0; i < scpPrimes_vector->count; ++i)
 		if (((uint64_t*)scpPrimes_vector->data)[i] >= n)
 			return ((uint64_t*)scpPrimes_vector->data)[i];
-	for (uint64_t p = scpPrimes_vector->count == 1 ? 3 : ((uint64_t*)scpPrimes_vector->data)[scpPrimes_vector->count - 1] + 2; true; p += 2) {
+	for (uint64_t p = scpPrimes_vector->count == 1 ? 3 : ((uint64_t*)scpPrimes_vector->data)[scpPrimes_vector->count - 1] + 2; ; p += 2) {
 		size_t i;
 		for (i = 1; i < scpPrimes_vector->count \
 			&& ((uint64_t*)scpPrimes_vector->data)[i] * ((uint64_t*)scpPrimes_vector->data)[i] < p \
