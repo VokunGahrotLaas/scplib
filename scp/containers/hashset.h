@@ -1,9 +1,7 @@
 #ifndef SCP_HASHSET_H
 #define SCP_HASHSET_H
 
-#include <stdlib.h>
-#include <stdio.h>
-
+#include "scp/utils/macros.h"
 #include "scp/maths/primes.h"
 
 #define scpHashSet_BASE_SIZE 50

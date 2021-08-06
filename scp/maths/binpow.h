@@ -1,8 +1,7 @@
 #ifndef SCP_BINPOW_H
 #define SCP_BINPOW_H
 
-#include <stddef.h>
-#include <stdint.h>
+#include "scp/utils/macros.h"
 
 #define _SCP_MAKE_ALL_NEW_BINPOW \
 _SCP_MAKE_NEW_BINPOW(signed char, hhi) \

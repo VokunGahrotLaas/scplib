@@ -1,10 +1,7 @@
 #ifndef SCP_STREAM_H
 #define SCP_STREAM_H
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdarg.h>
-
+#include "scp/utils/macros.h"
 #include "scp/exceptions.h"
 
 typedef enum scpStreamSubstreamType {

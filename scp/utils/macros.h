@@ -1,13 +1,6 @@
 #ifndef SCP_MACROS_H
 #define SCP_MACROS_H
 
-#include <stddef.h>
-#include <stdint.h>
-
-#define scpBool _Bool
-#define scpTrue 1
-#define scpFalse 0
-
 #ifndef __GNUC__
 #warning "this library was made for gcc"
 #define  __attribute__(x) /**/
@@ -30,23 +23,29 @@
 #ifdef __STDC__
 #ifndef __STDC_VERSION__
 #error "ANSI C is not supported"
+#define SCP_STDC_PRE23
 #define SCP_STDC_PRE11
 #define SCP_STDC_PRE99
 #define SCP_STDC_90
 #define SCP_STDC_89
 #elif __STDC_VERSION__ >= 202000L
+#define SCP_STDC23
 #define SCP_STDC2X
 #elif __STDC_VERSION__ >= 201710L
+#define SCP_STDC_PRE23
 #define SCP_STDC18
 #define SCP_STDC17
 #elif __STDC_VERSION__ >= 201112L
+#define SCP_STDC_PRE23
 #define SCP_STDC11
 #define SCP_STDC1X
 #elif __STDC_VERSION__ >= 199901L
+#define SCP_STDC_PRE23
 #define SCP_STDC_PRE11
 #define SCP_STDC99
 #elif __STDC_VERSION__ >= 199409L
 #error "c95 is not suported"
+#define SCP_STDC_PRE23
 #define SCP_STDC_PRE11
 #define SCP_STDC_PRE99
 #define SCP_STDC95
@@ -57,6 +56,12 @@
 #define SCP_STDC_PRE11
 #define SCP_STDC_PRE99
 #define SCP_STDC72
+#endif
+
+#ifdef SCP_STDC_PRE23
+#if !defined(__STDC_ALLOC_LIB__) || !defined(__STDC_WANT_LIB_EXT2__) || __STDC_WANT_LIB_EXT2__ != 1
+#define SCP_ALLOC_LIB
+#endif
 #endif
 
 #ifdef SCP_STDC_PRE11
@@ -76,6 +81,20 @@
 #endif // SCP_PEDANTIC
 
 #define SCP_SWAP(type, a, b) { type tmp = a; a = b; b = tmp; }
+
+typedef _Bool scpBool;
+#define scpTrue ((scpBool)1)
+#define scpFalse ((scpBool)0)
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <wchar.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <inttypes.h>
+#include <stdarg.h>
+#include <time.h>
 
 typedef void (*scpFunc_copy)(const void* data, void* new_data);
 typedef void* (*scpFunc_clone)(const void* data);

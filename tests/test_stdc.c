@@ -1,6 +1,3 @@
-#include <stdlib.h>
-#include <stdio.h>
-
 #include "scp/utils.h"
 #include "scp/maths.h"
 #include "scp/containers/array.h"

@@ -1,10 +1,6 @@
 #ifndef SCP_EXCEPTIONS_H
 #define SCP_EXCEPTIONS_H
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdarg.h>
-
 #include "scp/utils/macros.h"
 
 #define _SCP_MAKE_NEW_EXCEPTION(name) \

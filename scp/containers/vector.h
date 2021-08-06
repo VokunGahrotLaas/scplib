@@ -1,10 +1,6 @@
 #ifndef SCP_VECTOR_H
 #define SCP_VECTOR_H
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-
 #include "scp/utils/macros.h"
 #include "scp/exceptions.h"
 

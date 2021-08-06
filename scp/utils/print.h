@@ -1,8 +1,7 @@
 #ifndef SCP_PRINT_H
 #define SCP_PRINT_H
 
-#include <stdio.h>
-#include <inttypes.h>
+#include "scp/utils/macros.h"
 
 #define _SCP_MAKE_ALL_NEW_PRINT_INTEGER \
 _SCP_MAKE_NEW_PRINT_INTEGER(signed char, hhi, "%hhi") \

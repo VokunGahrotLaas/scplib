@@ -2,11 +2,6 @@
 #ifndef SCP_INT128_H
 #define SCP_INT128_H
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdint.h>
-#include <inttypes.h>
-
 #include "scp/utils/macros.h"
 
 #ifndef __SIZEOF_INT128__

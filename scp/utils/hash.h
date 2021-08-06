@@ -1,11 +1,8 @@
 #ifndef SCP_HASH_H
 #define SCP_HASH_H
 
-#include <stdlib.h>
-#include <stdint.h>
-#include <string.h>
-#include <wchar.h>
-
+#include "scp/utils/macros.h"
+#include "scp/utils/string.h"
 #include "scp/maths/binpow.h" 
 
 uint64_t scpHash_base_string(const char* s, const uint64_t a);

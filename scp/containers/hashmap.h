@@ -1,9 +1,7 @@
 #ifndef SCP_HASHMAP_H
 #define SCP_HASHMAP_H
 
-#include <stdlib.h>
-#include <stdio.h>
-
+#include "scp/utils/macros.h"
 #include "scp/maths/primes.h"
 
 #define scpHashMap_BASE_SIZE 50

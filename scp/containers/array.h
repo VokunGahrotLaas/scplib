@@ -1,10 +1,6 @@
 #ifndef SCP_ARRAY_H
 #define SCP_ARRAY_H
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-
 #include "scp/utils/macros.h"
 #include "scp/exceptions.h"
 
@@ -25,6 +21,8 @@ void scpArray_copy(struct scpArray* array, struct scpArray* new_array);
 void scpArray_fcopy(struct scpArray* array, struct scpArray* new_array, scpFunc_copy copy_data);
 void scpArray_resize(struct scpArray* array, size_t count);
 void* scpArray_at(struct scpArray* array, size_t index);
+void* scpArray_append(struct scpArray* array);
+void scpArray_pop(struct scpArray* array);
 void scpArray_map_index(struct scpArray* array, scpFunc_map_index f);
 void scpArray_map(struct scpArray* array, scpFunc_map f);
 void scpArray_print(struct scpArray* array, scpFunc_print print);
@@ -39,6 +37,8 @@ static struct scpArrayType {
 	void (*fcopy)(struct scpArray* array, struct scpArray* new_array, scpFunc_copy copy_data);
 	void (*resize)(struct scpArray* array, size_t count);
 	void* (*at)(struct scpArray* array, size_t index);
+	void* (*append)(struct scpArray* array);
+	void (*pop)(struct scpArray* array);
 	void (*map_index)(struct scpArray* array, scpFunc_map_index f);
 	void (*map)(struct scpArray* array, scpFunc_map f);
 	void (*print)(struct scpArray* array, scpFunc_print print);
@@ -52,6 +52,8 @@ static struct scpArrayType {
 	.fcopy = scpArray_fcopy,
 	.resize = scpArray_resize,
 	.at = scpArray_at,
+	.append = scpArray_append,
+	.pop = scpArray_pop,
 	.map_index = scpArray_map_index,
 	.map = scpArray_map,
 	.print = scpArray_print,
@@ -121,6 +123,16 @@ void* scpArray_at(struct scpArray* array, size_t index) {
 	if (index >= array->count)
 		SCP_EXCEPTION(scpException_Exception, "index can't be greater or equal to count (%lu >= %lu)", index, array->count);
 	return (void*)((char*)array->data + index * array->size);
+}
+
+void* scpArray_append(struct scpArray* array) {
+	scpArray_resize(array, array->count + 1);
+	return (void*)((char*)array->data + (array->count - 1) * array->size);
+}
+
+void scpArray_pop(struct scpArray* array) {
+	if (array->count == 0) SCP_EXCEPTION(scpException_OutOfBound, "can't pop an empty array");
+	scpArray_resize(array, array->count - 1);
 }
 
 void scpArray_map_index(struct scpArray* array, scpFunc_map_index f) {

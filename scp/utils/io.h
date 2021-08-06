@@ -1,9 +1,7 @@
 #ifndef SCP_IO_H
 #define SCP_IO_H
 
-#include <stdio.h>
-
-#include "scp/utils/macros.h"
+#include "scp/utils.h"
 
 scpBool scpIO_flush_buffer(FILE* stream, char* buffer);
 
